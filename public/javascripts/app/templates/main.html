@@ -1,0 +1,69 @@
+
+<div class="container">
+	<div class="genre-block cf">
+		<a href="#/music/genre/0"><div class="genre-item">Без жанра</div></a>
+		<a href="#/music/genre/{{genre.slug}}" ng-repeat="genre in genres"><div class="genre-item" ng-bind="genre.title"></div></a>
+	</div>
+	<hr>
+	<div class="btn-black" ng-click="showSB()"><i class="glyphicon glyphicon-search"></i>Поиск</div>
+
+	<div class="search-block" ng-class="searchBlockVis ? 'sb-show': '' ">
+		<div class="sb-wrapper">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon"><i class="glyphicon glyphicon-music"></i></div>
+							<input type="text" class="form-control" placeholder="Название композиции" ng-model="filter.title">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<div class="input-group">
+							<select ng-model="author" ng-change="selectAuthor(author)">
+								<option value="">Выберете исполнителя</option>
+								<option ng-repeat="author in authors" value="{{author}}" ng-bind="author.title"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<div class="input-group">
+							<select ng-model="filter.album.title">
+								<option value="">Выберете альбом</option>
+								<option ng-repeat="album in albums" value="{{album.title}}" ng-bind="album.title"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="music-block cf">
+		<a href="#/music/create">
+			<div class="music-item">
+				<div class="mi-wrapper add-music">
+					<i class="glyphicon glyphicon-plus"></i>
+					<p>Новый трек</p>
+				</div>
+			</div>
+		</a>
+		<div class="music-item" ng-repeat="track in music | filter: filter">
+			<a href="#/music/{{track.id}}">
+				<div class="mi-wrapper">
+					<div class="mii-genre" ng-bind="track.genre.title || 'Без жанра' "></div>
+					<img ng-src="/images/cover/{{track.album.cover}}" alt="">
+					<div class="opacity-block"></div>
+					<div class="mi-info">
+						<div class="mii-title" ng-bind="track.title"></div>
+						<div class="mii-author" ng-bind="track.author.title"></div>
+						<div class="mii-album" ng-bind="track.album.title"></div>
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>

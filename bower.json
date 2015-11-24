@@ -1,0 +1,23 @@
+{
+  "name": "music_app",
+  "version": "1.0.0",
+  "authors": [
+    "Emil <emilkip@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-file-upload": "~9.1.2",
+    "angular-audio": "~1.7.1"
+  }
+}

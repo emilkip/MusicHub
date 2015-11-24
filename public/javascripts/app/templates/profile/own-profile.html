@@ -1,0 +1,87 @@
+
+<div class="container">
+	<h1>Личный кабинет</h1>
+	<hr>
+	<div class="row">
+		<div class="col-md-6">
+			<h3>Ваша музыка</h3>
+			<hr>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Исполнитель, название</th>
+						<th>Жанр</th>
+						<th>Действия</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="mus in music">
+						<td><a href="#/music/{{mus.id}}">{{mus.author.title}} - {{mus.title}}</a></td>
+						<td>{{mus.genre.title || 'Без жанра'}}</td>
+						<td><a href="#/music/{{mus.id}}/edit"><div class="btn-black"><i class="glyphicon glyphicon-pencil"></i></div></a>
+					<!-- 	<div class="btn-black" ng-click="deleteMusic($index, mus)"><i class="glyphicon glyphicon glyphicon-trash"></i></div></td> -->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<h3>Ваши плейлисты</h3>
+			<hr>
+			<div class="btn-black" ng-click="plModalShow()">Добавить плейлист</div>
+			<hr>
+			<section class="ac-container">
+				<div ng-repeat="list in playlists">
+					<input id="{{list.id}}" name="accordion-1" type="radio" />
+					<label for="{{list.id}}" ng-click="getPlaylistItem(list.id)" ng-bind="list.title"></label>
+					<article class="ac-auto">
+						<div class="btn-black" ng-click="deletePlaylist($index, list)"><i class="glyphicon glyphicon glyphicon-trash"></i>Удалить плейлист</div>
+						<a href="#/playlist/{{list.id}}/edit"><div class="btn-black"><i class="glyphicon glyphicon glyphicon-pencil"></i>Редактировать плейлист</div></a>
+						<table class="table">
+							<tr ng-repeat="music in playlistItems">
+								<td>{{$index + 1}}</td>
+								<td><a href="#/music/{{music.music_id.id}}">{{music.music_id.author.title}} - {{music.music_id.title}}</a></td>
+								<td></td>
+							</tr>
+						</table>
+					</article>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+
+<div class="new-pl-modal-back" ng-class="newPlModalVis ? 'npm-show' : '' " ng-click="newPlModalVis = false"></div>
+<div class="new-pl-modal" ng-class="newPlModalVis ? 'npm-show' : '' ">
+	<div class="row">
+		<div class="col-md-8">
+			<h2>Новый плейлист</h2>
+		</div>
+		<div class="col-md-4">
+			<div class="btn-black" ng-click="newPlaylist(newPl)">Создать плейлист</div>
+		</div>
+	</div>
+	<div class="err-note" ng-if="errNote" ng-bind="errNote"></div>
+	<hr>
+	<input type="text" ng-model="newPl.title" class="npm-pl-name" placeholder="Название плейлиста">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="npm-music">
+				<p class="npm-empty-note" ng-if="isEmpty()">Добавьте композиции в плейлист</p>
+				<div class="npma-item cf" ng-repeat="music in newPl.music">
+					<img ng-src="/images/cover/{{music.album.cover}}" alt="">
+					<p>{{music.author.title}} - {{music.title}}</p>
+					<div class="btn-black" ng-click="removeItemInPl($index)"><i class="glyphicon glyphicon-minus"></i></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="npm-all-music">
+				<div class="npma-item cf" ng-repeat="music in modalMusic">
+					<img ng-src="/images/cover/{{music.album.cover}}" alt="">
+					<p>{{music.author.title}} - {{music.title}}</p>
+					<div class="btn-black" ng-click="addItemToPl(music)"><i class="glyphicon glyphicon-plus"></i></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

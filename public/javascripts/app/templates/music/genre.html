@@ -1,0 +1,26 @@
+
+<div class="container">
+
+	<div class="col-md-offset-3 col-md-6">
+		<div class="well" ng-if="resultNote">
+			<h3 ng-bind="resultNote"></h3>
+		</div>
+	</div>
+
+	<div class="music-block cf">
+		<div class="music-item" ng-repeat="track in music">
+			<a href="#/music/{{track.id}}">
+				<div class="mi-wrapper">
+					<div class="mii-genre" ng-bind="track.genre.title || 'Без жанра' "></div>
+					<img ng-src="/images/cover/{{track.album.cover}}" alt="">
+					<div class="opacity-block"></div>
+					<div class="mi-info">
+						<div class="mii-title" ng-bind="track.title"></div>
+						<div class="mii-author" ng-bind="track.author.title"></div>
+						<div class="mii-album" ng-bind="track.album.title"></div>
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>

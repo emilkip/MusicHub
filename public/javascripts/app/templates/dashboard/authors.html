@@ -1,0 +1,46 @@
+
+<div class="content">
+	<div class="container">
+		<ul class="nav nav-pills">
+			<li role="presentation">
+				<a href="#/">Главная</a>
+			</li>
+			<li role="presentation">
+				<a href="#/dashboard/genre">Жанры</a>
+			</li> 
+			<li role="presentation">
+				<a href="#/dashboard/tracks">Треки</a>
+			</li> 
+		</ul>
+		<h1>Исполнители</h1>
+		<hr>
+		<table class="table">
+			<thead>
+				<tr>
+					<td>Исполнитель</td>
+					<td>Альбомы</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="author in authors">
+					<td ng-bind="author.author.title"></td>
+					<td>
+						<table class="table dashboard-albums">
+							<thead>
+								<tr>
+									<td>Название</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="album in authors | filter: author.author.title">
+									<td class="dashboard-album-image"><img ng-src="/images/cover/{{album.cover}}" alt=""> {{album.title}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+

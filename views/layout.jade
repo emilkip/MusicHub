@@ -1,0 +1,41 @@
+doctype html
+html(ng-app="MusicHub")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+
+		title MusicHub
+
+		link(rel="stylesheet", href="/stylesheets/style.css")
+		link(rel="stylesheet", href="/vendor/bootstrap/dist/css/bootstrap.min.css")
+
+	body
+		.nav-bar
+			.logo
+				a(href="#/")
+					h1 MusicHub
+
+			.auth-block.cf
+
+				if (user)
+					a.btn-profile(href="#/profile")= user.username
+					if (user.admin)
+						a.btn-main(href="#/dashboard") Админка
+					a.btn-main(href="/logout") Выход
+				else
+					a.btn-main(href="/reg") Регистрация
+					a.btn-main(href="/login") Вход
+
+		block content
+
+		script(src="/vendor/angular/angular.min.js")
+		script(src="/vendor/angular-route/angular-route.min.js")
+		script(src="/vendor/ng-file-upload/ng-file-upload.min.js")
+		script(src="/vendor/angular-audio/app/angular.audio.js")
+		script(src="/vendor/wavesurfer.min.js")
+
+		script(src="/javascripts/app/app.js")
+		script(src="/javascripts/app/controllers/mainCtrl.js")
+		script(src="/javascripts/app/controllers/musicCtrl.js")
+		script(src="/javascripts/app/controllers/profileCtrl.js")
+		script(src="/javascripts/app/controllers/dashboardCtrl.js")

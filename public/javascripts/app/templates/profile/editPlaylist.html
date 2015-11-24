@@ -1,0 +1,35 @@
+
+<div class="container edit-pl">
+	<div class="row">
+		<div class="col-md-8">
+			<h2>Новый плейлист</h2>
+		</div>
+		<div class="col-md-4">
+			<div class="btn-black" ng-click="editPlaylist(editPl)">Сохранить плейлист</div>
+		</div>
+	</div>
+	<div class="err-note" ng-if="errNote" ng-bind="errNote"></div>
+	<hr>
+	<input type="text" ng-model="editPl.title" class="npm-pl-name" placeholder="Название плейлиста">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="npm-music">
+				<p class="npm-empty-note" ng-if="isEmpty()">Добавьте композиции в плейлист</p>
+				<div class="npma-item cf" ng-repeat="music in editPl.music">
+					<img ng-src="/images/cover/{{music.album.cover}}" alt="">
+					<p>{{music.author.title}} - {{music.title}}</p>
+					<div class="btn-black" ng-click="removeItemInPl($index)"><i class="glyphicon glyphicon-minus"></i></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="npm-all-music">
+				<div class="npma-item cf" ng-repeat="mus in music">
+					<img ng-src="/images/cover/{{mus.album.cover}}" alt="">
+					<p>{{mus.author.title}} - {{mus.title}}</p>
+					<div class="btn-black" ng-click="addItemToPl(mus)"><i class="glyphicon glyphicon-plus"></i></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

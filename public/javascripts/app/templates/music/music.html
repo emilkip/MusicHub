@@ -1,0 +1,35 @@
+
+<div class="container">
+	<div class="row">
+		<div class="music-cont cf">
+			<div class="music-img">
+				<img ng-src="/images/cover/{{music.album.cover}}" alt="">
+			</div>
+			<div class="music-cont-meta-info cf">
+				<span ng-bind="music.genre.title"></span>
+				<br>
+				<span><i class="glyphicon glyphicon-user"></i>{{music.creator.username}}</span>
+			</div>
+			<div class="music-inf">
+				<table class="music-info-table">
+					<tr>
+						<td class="mit-title">{{music.title}}</td>
+					</tr>
+					<tr>
+						<td class="mit-other">{{music.author.title}}</td>
+					</tr>
+					<tr>
+						<td class="mit-other">{{music.album.title}}</td>
+					</tr>
+				</table>
+				<div class="player-control">
+					<div class="btn-black" ng-click="forward()"><i class="glyphicon glyphicon-backward"></i>Назад</div>
+					<div class="btn-black" ng-click="play()"><i class="glyphicon glyphicon-play"></i>Воспроизвести</div>
+					<div class="btn-black" ng-click="play()"><i class="glyphicon glyphicon-stop"></i>Остановить</div>
+					<div class="btn-black" ng-click="forward()"><i class="glyphicon glyphicon-forward"></i>Вперёд</div>
+				</div>
+				<div id="player" class="player"></div>
+			</div>
+		</div>
+	</div>
+</div>

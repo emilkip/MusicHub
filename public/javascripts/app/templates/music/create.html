@@ -1,0 +1,126 @@
+<div class="container">
+	<div class="create-music-block">
+		<div class="row">
+
+			<div class="col-md-offset-3 col-md-6">
+				<h1>Новая композиция</h1>
+				<hr>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Название" ng-model="music.title">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-7">
+						<div class="form-group">
+							<select ng-model="music.author" ng-change="selectAuthor(music.author)">
+								<option value="">Выберете исполнителя</option>
+								<option ng-repeat="author in authors" value="{{author.id}}" ng-bind="author.title"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="btn-black-full" ng-click="showModal(1)"><i class="glyphicon glyphicon-plus"></i>Добавить исполнителя</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-7">
+						<div class="form-group">
+							<select ng-model="music.album">
+								<option value="">Выберете альбом</option>
+								<option ng-repeat="album in albums" value="{{album.id}}" ng-bind="album.title"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="btn-black-full" ng-click="showModal(2)"><i class="glyphicon glyphicon-plus"></i>Добавить альбом</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-7">
+						<div class="form-group">
+							<select ng-model="music.genre">
+								<option value="">Выберете жанр</option>
+								<option ng-repeat="genre in genres" value="{{genre.id}}" ng-bind="genre.title"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="cm-audio" name="audio" ngf-select ng-model="audio" ngf-multiple="false" ngf-pattern="'audio/*'" accept="audio/*" ngf-allow-dir="true">
+							<i class="glyphicon glyphicon-music"></i>
+							<span ng-if="!audio">Выберете композицию</span>
+						</div>
+						<span ng-bind="audio.name"></span>
+					</div>
+				</div>
+				<hr>
+				<div class="btn-black" ng-click="createMusic(music)">Создать</div>
+			</div>
+
+		</div>
+		
+	</div>
+</div>
+
+<div class="new-pl-modal-back" ng-class="modalVis ? 'npm-show' : '' " ng-click="modalVis = false"></div>
+<div class="create-music-modal" ng-class="modalVis ? 'npm-show' : '' ">
+	<div ng-if="!successVis">
+		<h3 ng-bind="addTitle"></h3>
+		<hr>
+		<div class="cmm-album" ng-if="addType == 'album' ">
+			<div class="col-md-12">
+				<div class="form-group">
+					<select ng-model="newAlbumAuthor" ng-change="selectAuthor(newAlbumAuthor)">
+						<option value="">Выберете исполнителя</option>
+						<option ng-repeat="author in authors" value="{{author.id}}" ng-bind="author.title"></option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="album.title" placeholder="Название">
+				</div>
+			</div>
+			<div class="col-md-12">
+				<h3>Обложка альбома</h3>
+				<div class="cm-thumb" name="cover" ngf-drop ngf-select ng-model="cover" ngf-multiple="false" ngf-pattern="'image/*'" accept="image/*" ngf-allow-dir="true" ngf-drag-over-class="thumbnail-dragover">
+					<img src="" ng-if="cover" ngf-src="cover">
+					<i class="glyphicon glyphicon-picture" ng-if="!cover"></i>
+					<span ng-if="!cover">Перенесите сюда своё изображение или выберете</span>
+				</div>
+			</div>
+			<div class="col-md-3">
+					<div class="btn-black" ng-click="createAlbum(album, cover, newAlbumAuthor)">Добавить</div>
+				</div>
+				<div class="col-md-9">
+					<div class="err-note" ng-if="errNote" ng-bind="errNote"></div>
+				</div>
+		</div>
+		<div class="cmm-author" ng-if="addType == 'author' ">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<input type="text" class="form-control" ng-model="author.title" placeholder="Название группы или имя исполнителя">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="btn-black" ng-click="createAuthor(author)">Добавить</div>
+				</div>
+				<div class="col-md-9">
+					<div class="err-note" ng-if="errNote" ng-bind="errNote"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="create-success" ng-if="successVis">
+		<svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/></svg>
+		<h3>Добавленно</h3>
+	</div>
+</div>

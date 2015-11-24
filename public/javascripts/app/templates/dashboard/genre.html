@@ -1,0 +1,46 @@
+
+<div class="container">
+	<ul class="nav nav-pills">
+		<li role="presentation">
+			<a href="#/">Главная</a>
+		</li>
+		<li role="presentation">
+			<a href="#/dashboard/genre">Жанры</a>
+		</li> 
+		<li role="presentation">
+			<a href="#/dashboard/tracks">Треки</a>
+		</li> 
+	</ul>
+	<hr>
+	<h1>Жанры</h1>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="list-group dm-genre npm-all-music">
+				<div class="list-group-item npma-item cf" ng-repeat="genre in genres"><p>{{genre.title}}</p>
+					<div class="btn-black" ng-click="showEditModal(genre, $index)"><i class="glyphicon glyphicon-pencil"></i></div>
+					<div class="btn-black" ng-click="deleteGenre(genre, $index)"><i class="glyphicon glyphicon glyphicon-trash"></i></div></td>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<h3>Новый жанр</h3>
+			<hr>
+			<div class="form-group">
+				<input type="text" ng-model="genre.title" placeholder="Название" class="form-control">
+			</div>
+			<div class="err-note" ng-if="errNote" ng-bind="errNote"></div>
+			<div class="btn-black" ng-click="createGenre(genre)">Создать</div>
+		</div>
+	</div>
+</div>
+
+<div class="new-pl-modal-back" ng-class="editGenreVis ? 'npm-show' : '' " ng-click="editGenreVis = false"></div>
+<div class="create-music-modal" ng-class="editGenreVis ? 'npm-show' : '' ">
+	<h3>Редактирование жанра</h3>
+	<hr>
+	<div class="form-group">
+		<input type="text" ng-model="editGenre" placeholder="Название" class="form-control">
+	</div>
+	<div class="err-note" ng-if="editErrNote" ng-bind="editErrNote"></div>
+	<div class="btn-black" ng-click="edit(editGenre)">Редактирование</div>
+</div>

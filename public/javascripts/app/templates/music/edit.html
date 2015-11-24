@@ -1,0 +1,69 @@
+
+<div class="container">
+	<div class="create-music-block">
+		<div class="row">
+			<div class="col-md-offset-3 col-md-6">
+				<h1>Редактирование трека</h1>
+				<p>{{music.author.title}} - {{music.title}}</p>
+				<hr>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<input type="text" class="form-control" name="title" placeholder="Название" ng-model="editMusic.title" ng-bind="music.title">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<select ng-model="editMusic.author" ng-change="selectAuthor(editMusic.author)" ng-options="author.id as (author.title) for author in authors track by author.id">
+								<option value="">Выберете исполнителя</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<select ng-model="editMusic.album" ng-options="album.id as (album.title) for album in albums track by album.id">
+								<option value="">Выберете альбом</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<select name="genre" ng-model="editMusic.genre" ng-options="genre.id as (genre.title) for genre in genres track by genre.id">
+								<option value="">Выберете жанр</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="cm-audio" name="audio" ngf-select ng-model="audio" ngf-multiple="false" ngf-pattern="'audio/*'" accept="audio/*" ngf-allow-dir="true">
+							<i class="glyphicon glyphicon-music"></i>
+							<span ng-if="!audio">Выберете композицию</span>
+						</div>
+						<span ng-bind="audio.name"></span>
+					</div>
+				</div>
+				<hr>
+				<div class="btn-black" ng-click="saveMusic(editMusic)">Сохранить</div>
+			</div>
+
+			<!-- <div class="col-md-6">
+				<h3>Обложка альбома</h3>
+				<div class="cm-thumb" name="thumb" ngf-drop ngf-select ng-model="thumbnail" ngf-multiple="false" ngf-pattern="'image/*'" accept="image/*" ngf-allow-dir="true" ngf-drag-over-class="thumbnail-dragover">
+					<img src="" ng-if="thumbnail" ngf-src="thumbnail">
+					<img ng-src="/uploads/{{music.cover}}" ng-if="music.cover && !thumbnail" alt="">
+					<i class="glyphicon glyphicon-picture" ng-if="!thumbnail && !music.cover"></i>
+					<span ng-if="!thumbnail && !music.cover">Перенесите сюда своё изображение или выберете</span>
+				</div>
+			</div> -->
+		</div>
+		
+	</div>
+</div>
