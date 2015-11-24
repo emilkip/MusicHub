@@ -322,5 +322,4 @@ module.exports = {
 				res.json({ status: false });
 			});
 	}
-
 };
