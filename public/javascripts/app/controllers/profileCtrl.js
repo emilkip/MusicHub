@@ -3,7 +3,7 @@
 	angular
 		.module('profileCtrl', [])
 
-		.controller('profilePageCtrl', ['$scope', '$http', '$routeParams', 
+		.controller('profilePageCtrl', ['$scope', '$http', '$routeParams',
 			function($scope, $http, $routeParams) {
 
 				$scope.newPlModalVis = false;
@@ -138,7 +138,7 @@
 			}
 		])
 
-		.controller('playistEditCtrl', ['$scope', '$http', '$routeParams', '$window', 
+		.controller('playistEditCtrl', ['$scope', '$http', '$routeParams', '$window',
 			function($scope, $http, $routeParams, $window){
 
 				$scope.editPl = {};
@@ -156,7 +156,7 @@
 					.then(function(items) {
 						items.data.forEach(function(item, i) {
 
-							$scope.editPl.music.push(item.music_id);
+							$scope.editPl.music.push(item.music);
 						});
 					});
 
@@ -209,4 +209,3 @@
 		]);
 
 })();
-

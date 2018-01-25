@@ -37,9 +37,9 @@
 						<div class="btn-black" ng-click="deletePlaylist($index, list)"><i class="glyphicon glyphicon glyphicon-trash"></i>Удалить плейлист</div>
 						<a href="#/playlist/{{list.id}}/edit"><div class="btn-black"><i class="glyphicon glyphicon glyphicon-pencil"></i>Редактировать плейлист</div></a>
 						<table class="table">
-							<tr ng-repeat="music in playlistItems">
+							<tr ng-repeat="item in playlistItems">
 								<td>{{$index + 1}}</td>
-								<td><a href="#/music/{{music.music_id.id}}">{{music.music_id.author.title}} - {{music.music_id.title}}</a></td>
+								<td><a href="#/music/{{item.music.id}}">{{item.music.author.title}} - {{item.music.title}}</a></td>
 								<td></td>
 							</tr>
 						</table>

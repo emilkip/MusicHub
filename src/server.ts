@@ -4,10 +4,12 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('music_app:server');
-var http = require('http');
-var orm = require('../configs/orm-config');
+const app = require('./app');
+
+import * as debug from 'debug';
+import * as http from 'http';
+
+debug('music_app:server');
 
 /**
  * Get port from environment and store in Express.
@@ -25,18 +27,10 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-orm.initialize(server, port, function(collections, connections) {  
-
-	app.models = collections; 
-	app.connections = connections;
-
-	var serv = server.listen(port, function() {
-		console.log('Express server listening on port ' + serv.address().port);
-	});
+server.listen(port, () => {
+ 	console.log('Express server listening on port ' + port);
 });
 
-// server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 

@@ -1,8 +1,8 @@
 
-var multer = require('multer');
+import * as multer from 'multer';
 
 
-module.exports = {
+export const uploadConfig = {
 
 	audio: multer({
 		dest: 'public/audio'
