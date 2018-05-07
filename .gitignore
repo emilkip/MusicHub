@@ -2,4 +2,6 @@
 node_modules
 public/audio
 public/images/cover
-dist
+!public/images/cover/music-placeholder.png
+dist_server
+public/dist_client

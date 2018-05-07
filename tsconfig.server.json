@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonJS",
+        "allowJs": true,
+        "target": "es6",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "inlineSources": true,
+        "moduleResolution": "node",
+        "outDir": "dist_server",
+        "baseUrl": "."
+
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

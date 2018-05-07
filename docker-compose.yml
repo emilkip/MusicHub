@@ -1,0 +1,79 @@
+version: "3"
+
+services:
+  app:
+    build: ./
+    container_name: music-hub-app
+    ports:
+      - "7000:3000"
+    depends_on:
+      - mongo
+    volumes:
+      - ./:/app
+    links:
+      - mongo
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  mongo2:
+    hostname: mongo2
+    image: mongo:3
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+    ports:
+      - "27019:27017"
+      - "28019:28017"
+    restart: always
+
+  mongo1:
+    hostname: mongo1
+    image: mongo:3
+    entrypoint: [ "/usr/bin/mongod", "--replSet", "rs", "--journal", "--smallfiles", "--rest" ]
+    ports:
+      - "27017:27017"
+      - "28017:28017"
+    links:
+      - mongo2:mongo2
+    restart: always
+
+  mongo:
+    image: mongo:3
+    ports:
+      - "27017:27017"
+    volumes:
+      - ../data":/data/db
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-platinum:6.2.0
+    container_name: music-hub-es
+    environment:
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
+      - "xpack.security.enabled=false"
+    ports:
+      - "9200:9200"
+
+  elasticsearch:
+    hostname: elasticsearch
+    image: stabenfeldt/elasticsearch-marvel
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    links:
+      - mongo1:mongo1
+      - mongo2:mongo2
+      - mongo3:mongo3
+    volumes:
+      - ./elasticsearch/logging.yml:/etc/elasticsearch/logging.yml
+    restart: always
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.2.0
+    container_name: music-hub-kibana
+    environment:
+      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+    ports:
+      - "5601:5601"
+    depends_on:
+     - "elasticsearch"

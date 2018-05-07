@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonJS",
+    "target": "es5",
+    "lib": ["es7", "dom"],
+    "moduleResolution": "node",
+    "rootDir": "public/javascripts/app",
+    "outDir": "public/dist_client",
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "jsx": "react"
+  },
+  "exclude": [
+    "src"
+  ]
+}

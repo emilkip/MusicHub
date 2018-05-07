@@ -1,0 +1,32 @@
+.upload-component {
+  margin: 5px 0;
+
+  [type='file'] {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+
+  label {
+    flex-basis: auto;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+
+    .fa {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
+  }
+
+  .upload-filename {
+    display: inline-block;
+    color: #333;
+    padding: 5px;
+    border: 1px solid #ddd;
+  }
+}

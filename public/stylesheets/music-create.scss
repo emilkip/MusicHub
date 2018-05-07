@@ -1,0 +1,46 @@
+@import "mixins";
+
+.music-create {
+  width: 500px;
+  margin-top: 50px;
+
+  .btn-black {
+    margin: 5px 0;
+  }
+}
+
+.form-select {
+  select {
+    border-radius: 3px;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+
+    option {
+      background-color: #fff;
+      color: #333;
+      font-size: 14pt;
+    }
+  }
+}
+
+.btn-black {
+  transition: background-color ease .3s;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #333;
+  display: inline-block;
+  padding: 10px;
+  border: none;
+
+  i {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: #555;
+    cursor: pointer;
+  }
+}

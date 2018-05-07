@@ -1,0 +1,103 @@
+@import "mixins";
+
+.layout-container {
+  height: 100%;
+  padding: 30px 50px;
+}
+
+.music-list {
+  margin-top: 50px;
+}
+
+.music-list-item {
+  float: left;
+  width: 300px;
+  padding: 5px;
+  height: 300px;
+  margin: 10px 0;
+
+  .info {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    bottom: 0;
+    z-index: 15;
+    color: #fff;
+    padding: 10px;
+
+    .title,
+    .author,
+    .album,
+    .creator {
+      width: 100%;
+      text-shadow: 0 1px 1px rgba(0,0,0,.5);
+    }
+
+    .title {
+      font-size: 18pt;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  .wrapper {
+    position: relative;
+    border: 1px solid #eee;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    .genre {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 5px;
+      color: #fff;
+      background-color: #333;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+    }
+  }
+
+  &:hover .opacity-block {
+    cursor: pointer;
+    opacity: .6;
+  }
+}
+
+.opacity-block {
+  transition: opacity ease .3s;
+  width: 100%;
+  height: 100%;
+  opacity: .4;
+  background-color: #000;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.add-music {
+  transition: color ease .3s;
+  background-color: #dedede;
+  height: 100%;
+  padding-top: 35%;
+  text-align: center;
+  color: #777;
+
+  i {
+    font-size: 28pt;
+  }
+
+  &:hover {
+    color: #333;
+    cursor: pointer;
+  }
+
+}

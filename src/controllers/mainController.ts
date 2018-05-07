@@ -1,11 +1,12 @@
 
 import { authenticate } from 'passport';
+import * as path from 'path';
 import { Request, Response, NextFunction } from 'express';
 
 
 
-export function mainPage(req: Request, res: Response) {
-	return res.render('index', { user: req.user });
+export function mainPage(req: Request & { user }, res: Response) {
+    return res.sendFile(path.resolve(__dirname, '../../views', 'index.html'));
 }
 
 
@@ -33,7 +34,7 @@ export function createUser(req: Request, res: Response, next: NextFunction) {
 }
 
 
-export function logout(req: Request, res: Response) {
+export function logout(req: Request & { logout }, res: Response) {
 	req.logout();
 	return res.redirect('/');
 }
@@ -45,6 +46,6 @@ export function reg(req: Request & { flash }, res: Response) {
 }
 
 
-export function currentUser(req: Request, res: Response) {
+export function currentUser(req: Request & { user }, res: Response) {
 	return res.status(200).json(req.user);
 }

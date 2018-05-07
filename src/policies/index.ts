@@ -3,8 +3,18 @@ import { Request, Response, NextFunction } from 'express';
 export function isAuthorized(req: Request, res: Response, next: NextFunction) {
 
 	if(!req.user) {
-		res.redirect('/login');
+		return res.redirect('/login');
 	} else {
-		next();
+		return next();
 	}
+}
+
+
+export function isNotAuthorized(req: Request, res: Response, next: NextFunction) {
+
+    if(!req.user) {
+       return next();
+    } else {
+        return res.redirect('/');
+    }
 }

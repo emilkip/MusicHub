@@ -1,25 +1,23 @@
 import * as express from 'express';
-
-
-const router = express.Router();
-
 import * as Main from '../controllers/mainController';
 import * as policy from '../policies/index';
 
+const router = express.Router();
 
 
-router.get('/', policy.isAuthorized, Main.mainPage);
+router.get('/login', policy.isNotAuthorized, Main.loginPage);
 
-router.get('/login', Main.loginPage);
+router.post('/login', policy.isNotAuthorized, Main.login);
 
-router.post('/login', Main.login);
+router.get('/logout', policy.isNotAuthorized, Main.logout);
 
-router.get('/logout', Main.logout);
+router.get('/reg', policy.isNotAuthorized, Main.reg);
 
-router.get('/reg', Main.reg);
-
-router.post('/reg', Main.createUser);
+router.post('/reg', policy.isNotAuthorized, Main.createUser);
 
 router.get('/current_user', Main.currentUser);
+
+router.get('*', policy.isAuthorized, Main.mainPage);
+
 
 export default router;

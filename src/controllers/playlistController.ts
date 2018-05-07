@@ -18,7 +18,7 @@ export function getPlaylist(req: Request, res: Response) {
 }
 
 
-export function getAllProfilePlaylists(req: Request, res: Response) {
+export function getAllProfilePlaylists(req: Request & { user }, res: Response) {
 
 	return Playlist
 		.find({ owner: req.user.id })
@@ -71,7 +71,7 @@ export function getPlaylistItem(req: Request, res: Response) {
 }
 
 
-export function createPlaylist(req: Request, res: Response) {
+export function createPlaylist(req: Request & { user }, res: Response) {
 
 	const body: any = req.body;
 

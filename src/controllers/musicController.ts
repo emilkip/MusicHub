@@ -1,8 +1,10 @@
 import * as fs from 'fs';
 import * as Promise from 'bluebird';
 import { Request, Response } from "express";
-import {IMusic, Music} from "../models/Music";
-import {PlaylistItem} from "../models/PlaylistItem";
+import { IMusic, Music } from "../models/Music";
+import { Author } from "../models/Author";
+import { Album } from "../models/Album";
+import { PlaylistItem } from "../models/PlaylistItem";
 
 
 
@@ -42,7 +44,7 @@ export function getAllByGenre(req: Request, res: Response) {
 }
 
 
-export function createMusic(req: Request, res: Response) {
+export function createMusic(req: Request & { file, user }, res: Response) {
 
 	const file: any = req.file;
 	const body: any = req.body;
@@ -58,11 +60,18 @@ export function createMusic(req: Request, res: Response) {
 			title: body.title,
 			album: body.album,
 			genre: body.genre,
-			audio: trackFileName,
+            filename: trackFileName,
 			creator: req.user.id
 		})
+		.then((createdMusic) => (
+            createdMusic
+				.populate('author')
+                .populate('album')
+                .populate('genre')
+				.execPopulate()
+		))
 		.then((createdMusic) => {
-			return res.status(200).json(createdMusic);
+            return res.status(200).json(createdMusic);
 		})
 		.catch((err) => {
 			console.log(err);
@@ -74,7 +83,7 @@ export function createMusic(req: Request, res: Response) {
 export function getOne(req: Request, res: Response) {
 
 	return Music
-		.findOne({ id: req.params.id })
+		.findOne({ _id: req.params.id })
 		.populate('genre')
 		.populate('author')
 		.populate('album')
@@ -84,7 +93,7 @@ export function getOne(req: Request, res: Response) {
 		})
 		.catch((err) => {
 			console.log(err);
-            return res.status(500).json(err);
+            return res.status(500).json({ message: 'Error during fetching music' });
 		});
 }
 
@@ -160,4 +169,36 @@ export function deleteMusic(req: Request, res: Response) {
 			console.log(err);
             return res.status(500).json(err);
 		});
+}
+
+
+export function search(req: Request, res: Response) {
+
+    const query: RegExp = new RegExp(req.body.query);
+
+    return Promise
+        .all([
+            Music.find({ title: { $regex: query, $options: 'i' } })
+                .populate('author')
+                .populate('album')
+                .populate('genre')
+                .limit(10),
+            Album.find({ title: { $regex: query, $options: 'i' } })
+                .populate('author')
+                .limit(10),
+            Author.find({ title: { $regex: query, $options: 'i' } })
+                .limit(10)
+        ])
+        .then((result) => {
+            const resultObject: object = {
+                musicList: result[0] || [],
+                albums: result[1] || [],
+                authors: result[2] || []
+            };
+            return res.status(200).json(resultObject);
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).json(err);
+        })
 }

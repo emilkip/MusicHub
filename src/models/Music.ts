@@ -1,4 +1,4 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema, Document, Model } from 'mongoose';
 import { IAuthor } from './Author';
 import { IAlbum } from './Album';
 import { IGenre } from './Genre';
@@ -6,16 +6,16 @@ import { IUser } from './User';
 
 
 export interface IMusic extends Document {
-  	author: IAuthor;
-  	genre: IGenre;
-  	album: IAlbum;
-  	creator: IUser;
-	title: string;
-  	filename: string;
+  	author: IAuthor
+  	genre: IGenre
+  	album: IAlbum
+  	creator: IUser
+	title: string
+  	filename: string
 }
 
 
-const musicSchema = new Schema({
+const musicSchema: Schema = new Schema({
 	author: {
 		ref: 'Author',
 		type: Schema.Types.ObjectId,
@@ -46,4 +46,4 @@ const musicSchema = new Schema({
 });
 
 
-export const Music = model<IMusic>('Music', musicSchema);
+export const Music: Model<IMusic> = model<IMusic>('Music', musicSchema);

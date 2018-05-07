@@ -1,0 +1,8 @@
+.git/**/*
+\.git
+**/\.git
+node_modules
+public/vendor
+pubilc/dist
+.idea
+.gitignore

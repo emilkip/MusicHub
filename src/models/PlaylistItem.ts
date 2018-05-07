@@ -1,14 +1,14 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema, Document, Model } from 'mongoose';
 import { IMusic } from './Music';
 import { IPlaylist } from './Playlist';
 
 
 export interface IPlaylistItem extends Document {
-	playlist: IPlaylist;
-  	music: IMusic;
+	playlist: IPlaylist
+  	music: IMusic
 }
 
-const playlistItemSchema = new Schema({
+const playlistItemSchema: Schema = new Schema({
 	playlist: {
 		ref: 'Playlist',
 		type: Schema.Types.ObjectId,
@@ -22,4 +22,4 @@ const playlistItemSchema = new Schema({
 });
 
 
-export const PlaylistItem = model<IPlaylistItem>('PlaylistItem', playlistItemSchema);
+export const PlaylistItem: Model<IPlaylistItem> = model<IPlaylistItem>('PlaylistItem', playlistItemSchema);

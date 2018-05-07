@@ -6,6 +6,7 @@ import * as AlbumCtrl from '../controllers/albumController';
 // import * as User from '../controllers/userController';
 import * as Playlist from '../controllers/playlistController';
 import { uploadConfig } from '../configs/upload';
+import { uploadCover } from '../common/FileUpload';
 
 
 const api = express.Router();
@@ -17,6 +18,7 @@ api.get('/music', MusicCtrl.getAllMusic);
 api.get('/music/:id', MusicCtrl.getOne);
 api.post('/music/:id/edit', uploadConfig.audio.single('file'), MusicCtrl.edit);
 api.delete('/music/:id', MusicCtrl.deleteMusic);
+api.post('/music/search', MusicCtrl.search);
 api.post('/music/create', uploadConfig.audio.single('file'), MusicCtrl.createMusic);
 api.get('/music/genre/:id', MusicCtrl.getAllByGenre);
 
@@ -34,15 +36,16 @@ api.delete('/genres/:id', GenreCtrl.deleteGenre);
 // Authors
 //=======================================
 api.get('/author', AuthorCtrl.getAuthors);
-// api.get('/author/:id/albums', AuthorCtrl.getAllAlbumsForAuthor);
-api.post('/author/create', AuthorCtrl.createAuthor);
+api.get('/author/:id/albums', AuthorCtrl.getAllAlbumsForAuthor);
+api.post('/author', AuthorCtrl.createAuthor);
 
 
 //=======================================
 // Albums
 //=======================================
 api.post('/album/author/:id', AlbumCtrl.getAlbumsByAuthor);
-api.post('/album/create', uploadConfig.cover.single('file'), AlbumCtrl.createAlbum);
+api.post('/album', uploadCover(), AlbumCtrl.createAlbum);
+api.get('/album/:id/music', AlbumCtrl.getMusic);
 
 
 //=======================================
@@ -61,9 +64,6 @@ api.get('/playlist/:id/items', Playlist.getPlaylistItem);
 api.post('/playlist/:id/edit', Playlist.editPlaylist);
 api.post('/playlist/:id/delete', Playlist.deletePlaylist);
 api.post('/playlist/add', Playlist.createPlaylist);
-
-
-
 
 
 export default api;

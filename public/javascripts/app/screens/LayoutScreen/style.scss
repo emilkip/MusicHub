@@ -1,0 +1,101 @@
+@import "~styleAlias/mixins.scss";
+
+a:not([href]) {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.nav-bar {
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  height: 50px;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  color: #fff;
+  margin-left: 50px;
+
+  h1 {
+    margin: 0;
+  }
+
+
+  a {
+    color: #fff;
+
+    &:hover {
+      color: #ddd;
+      text-decoration: none;
+    }
+
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
+.auth-block {
+  display: flex;
+  width: 200px;
+  justify-content: flex-end;
+  align-items: center;
+
+  a {
+    margin: 0 5px;
+  }
+
+  a.btn-profile {
+    transition: background-color ease .3s;
+    color: #fff;
+    float: left;
+    line-height: 70px;
+    font-size: 18pt;
+    padding: 0 20px;
+
+    &:hover {
+      background-color: #4D4D4D;
+      text-decoration: none;
+    }
+
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  a.btn-main {
+    transition: background-color ease .3s;
+    border-radius: 3px;
+    color: #333;
+    background-color: #fff;
+    padding: 5px;
+    display: inline-block;
+    font-size: 12pt;
+
+    &:hover {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #fff;
+      text-decoration: none;
+    }
+  }
+}
+
+.content {
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+}
+
+.cont {
+  padding: 20px;
+  border: 1px solid #333;
+  width: 250px;
+  height: 250px;
+  margin: 10px;
+}

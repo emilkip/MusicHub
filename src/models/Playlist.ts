@@ -1,14 +1,14 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema, Document, Model } from 'mongoose';
 import { IAuthor } from './Author';
 import { IUser } from './User';
 
 
 export interface IPlaylist extends Document {
-	title: string;
-  	owner: IUser;
+	title: string
+  	owner: IUser
 }
 
-const playlistSchema = new Schema({
+const playlistSchema: Schema = new Schema({
 	title: {
 		type: String,
 		required: true
@@ -20,4 +20,4 @@ const playlistSchema = new Schema({
 	}
 });
 
-export const Playlist = model<IPlaylist>('Playlist', playlistSchema);
+export const Playlist: Model<IPlaylist> = model<IPlaylist>('Playlist', playlistSchema);

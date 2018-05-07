@@ -1,0 +1,19 @@
+@mixin circle-black-button($size: 50px, $icon-size: 20px) {
+  border-radius: 50%;
+  width: $size;
+  height: $size;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $icon-size;
+
+  .fa {
+    color: #fff;
+  }
+
+  &:hover {
+    cursor: pointer;
+    opacity: .8;
+  }
+}

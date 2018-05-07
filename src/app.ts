@@ -7,18 +7,22 @@ import * as flash from 'connect-flash';
 import * as bodyParser from 'body-parser';
 import * as eSession from 'express-session';
 import * as passport from './configs/passport';
-import { development, production } from './configs/config';
 
 import routes from './routes/index';
 import api from './routes/api';
 
+import configs = require('./configs/config');
+const config = configs(process.env.NODE_ENV);
+
 const app = Express();
 
-if (process.env.NODE_ENV === 'production') {
-	mongoose.connect(`mongodb://${production.mongodb.host}:${production.mongodb.port}/${production.mongodb.dbName}`);
-} else {
-	mongoose.connect(`mongodb://${development.mongodb.host}:${development.mongodb.port}/${development.mongodb.dbName}`);
-}
+
+mongoose
+	.connect(`mongodb://${config.mongodb.host}:${config.mongodb.port}/${config.mongodb.dbName}`)
+	.catch((err) => {
+		console.log(err)
+	});
+
 
 
 
@@ -43,39 +47,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(Express.static(path.join(__dirname, '../public')));
 
+app.use('/libs', Express.static('node_modules'));
+
 // Routes
-app.use('/', routes);
 app.use('/api', api);
+app.use('/', routes);
 
 
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-	const err = new Error('Not Found');
-	return next(err);
-});
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-	app.use((err, req, res, next) => {
-		return res.render('error', {
-			message: err.message,
-			error: err
-		});
-	});
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use((err, req, res, next) => {
-	return res.render('error', {
-		message: err.message,
-		error: {}
-	});
-});
 
 
-// module.exports = app;
 export = app;

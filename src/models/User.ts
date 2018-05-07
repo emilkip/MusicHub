@@ -1,12 +1,12 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema, Document, Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 
 
 export interface IUser extends Document {
-  username: string;
-  password: string;
-  salt: string;
-  admin: boolean;
+  username: string
+  password: string
+  salt: string
+  admin: boolean
 }
 
 const userSchema: Schema = new Schema({
@@ -16,11 +16,13 @@ const userSchema: Schema = new Schema({
 	},
 	password: {
 		type: String,
-		required: true
+		required: true,
+        select: false
 	},
 	salt: {
 		type: String,
-		required: true
+		required: true,
+        select: false
 	},
 	admin: {
 		type: Boolean,
@@ -28,7 +30,7 @@ const userSchema: Schema = new Schema({
 	}
 });
 
-export const UserStatics = {
+export const UserStatics: any = {
 	generatePassword(password) {
 		let salt;
 		return bcrypt.genSalt(10)
@@ -42,4 +44,4 @@ export const UserStatics = {
 	}
 };
 
-export const User = model<IUser>('User', userSchema);
+export const User: Model<IUser> = model<IUser>('User', userSchema);

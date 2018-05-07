@@ -1,0 +1,20 @@
+.author-list {
+  a {
+    text-decoration: none;
+  }
+}
+
+.author-list-item {
+  padding: 20px;
+  border: 1px solid #ddd;
+  color: #333;
+
+  span {
+    font-size: 25px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    border-left: 10px solid #333;
+  }
+}
