@@ -3,7 +3,7 @@ import * as MusicCtrl from '../controllers/musicController';
 import * as GenreCtrl from '../controllers/genreController';
 import * as AuthorCtrl from '../controllers/authorController';
 import * as AlbumCtrl from '../controllers/albumController';
-// import * as User from '../controllers/userController';
+import * as UserCtrl from '../controllers/userController';
 import * as Playlist from '../controllers/playlistController';
 import { uploadConfig } from '../configs/upload';
 import { uploadCover } from '../common/FileUpload';
@@ -51,6 +51,7 @@ api.get('/album/:id/music', AlbumCtrl.getMusic);
 //=======================================
 // Profile
 //=======================================
+api.get('/profile/get_user', UserCtrl.getUser);
 api.get('/profile/music', MusicCtrl.getAllProfileMusic);
 api.get('/profile/playlists', Playlist.getAllProfilePlaylists);
 api.get('/profile/:id/music', MusicCtrl.getAllByUserId);

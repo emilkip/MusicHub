@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {IMusic} from "../../common/interfaces";
 import {connect} from "react-redux";
-import {changeMusicStatus, playMusic} from "../../actions/playerActions";
-import {EmptyListMsg} from "../../components/EmptyListMsg";
+import {changeMusicStatus} from "../../actions/playerQueueActions";
+import {EmptyListMsg} from "../../components";
 import 'styleAlias/player.scss';
 
 interface IProps {
@@ -20,8 +20,8 @@ interface IState {
 }
 
 @(connect((state: any) => ({
-    musicList: state.playbackQueueReducer.musicList || [],
-    playedMusic: state.playerReducer.playedMusic
+    musicList: state.playerQueueReducer.musicList || [],
+    playedMusic: state.playerQueueReducer.playedMusic
 })) as any)
 export class QueueModal extends React.Component<IProps, IState> {
     constructor(props: any) {
@@ -48,7 +48,7 @@ export class QueueModal extends React.Component<IProps, IState> {
         if (this.state.playedMusic.music._id === music._id) {
             return this.props.dispatch(changeMusicStatus(music, status));
         }
-        this.props.dispatch(playMusic(music));
+        this.props.dispatch(changeMusicStatus(music, true));
     }
 
     renderList() {
@@ -75,8 +75,9 @@ export class QueueModal extends React.Component<IProps, IState> {
     renderModal() {
         return (
             <div className="queue-modal">
-                <h3>Queue</h3>
-                <hr/>
+                <div className="queue-header">
+                    <h3>Queue</h3>
+                </div>
                 <div className="queue-modal-list">
                     {this.renderList()}
                     <EmptyListMsg message="Queue is empty" render={this.state.musicList.length === 0}/>

@@ -2,8 +2,7 @@ import * as React from 'react';
 import {IMusic} from "../common/interfaces";
 import {connect} from "react-redux";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
-import {playMusic, fetchPlayerStatus, changeMusicStatus} from '../actions/playerActions'
-import {playOne, pushMusicToQueue} from '../actions/playbackQueueActions'
+import {playOne, pushMusicToQueue, changeMusicStatus} from '../actions/playerQueueActions'
 import 'styleAlias/player.scss';
 
 interface IProps {
@@ -21,7 +20,7 @@ interface IState extends IProps {
 
 
 @(connect((state: any) => ({
-    playedMusic: state.playerReducer.playedMusic || {}
+    playedMusic: state.playerQueueReducer.playedMusic || {}
 })) as any)
 export class SingleMusicPlayer extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -45,7 +44,7 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchPlayerStatus());
+        // this.props.dispatch(fetchPlayerStatus());
     }
 
     getCover(cover: string) {
@@ -59,7 +58,7 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
             return this.props.dispatch(changeMusicStatus(this.state.music, !this.state.playing));
         }
 
-        this.props.dispatch(playMusic(this.state.music));
+        this.props.dispatch(changeMusicStatus(this.state.music, true));
         this.props.dispatch(playOne(this.state.music));
 
         this.setState({
@@ -68,6 +67,7 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
     }
 
     addToQueue() {
+        if (!this.state.music || !this.state.music.filename) return;
         this.props.dispatch(pushMusicToQueue(this.state.music));
     }
 

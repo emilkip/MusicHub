@@ -215,7 +215,41 @@
 }
 
 .global-player-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   margin: 0 10px;
+
+  .step-button {
+    margin: 0 15px;
+
+    .fa {
+      font-size: 24px;
+    }
+
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
+  }
+
+  .additional-button {
+    color: #aaa;
+
+    .fa {
+      font-size: 16px;
+    }
+
+    &.active {
+      color: #333;
+    }
+
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
+  }
 
   .global-player-button {
     @include circle-black-button(50px);
@@ -282,19 +316,33 @@
 
 
 .queue-modal {
+  border-radius: 5px;
   width: 400px;
   height: 500px;
-  padding: 20px;
   background-color: #fff;
   box-shadow: 0 5px 25px rgba(0, 0, 0, .2);
   position: absolute;
   bottom: 70px;
   right: 100px;
   z-index: 20;
+
+  .queue-header {
+    height: 60px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #dedede;
+
+    h3 {
+      margin: 0;
+    }
+  }
 }
 
 .queue-modal-list {
-  margin: 10px 0;
+  height: calc(100% - 60px);
+  padding: 20px;
+  overflow-y: scroll;
 
   .queue-item {
     padding: 5px;

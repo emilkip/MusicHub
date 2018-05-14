@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Progress, VolumeBar, QueueModal} from '../';
 import {connect} from "react-redux";
 import {IMusic} from "../../common/interfaces";
-import {changeMusicStatus} from "../../actions/playerActions";
+import {changeMusicStatus, playNext, playPrev, toggleShuffle} from "../../actions/playerQueueActions";
 import 'styleAlias/player.scss';
 
 const Sound = require('react-sound').default;
@@ -22,11 +22,11 @@ interface IState {
     music: IMusic
     playedMusic: any
     queueOpened: boolean
+    shuffle: boolean
 }
 
 @(connect((state: any) => ({
-    music: state.playerReducer.music,
-    playedMusic: state.playerReducer.playedMusic
+    playedMusic: state.playerQueueReducer.playedMusic
 })) as any)
 export class GlobalPlayer extends React.Component<IProps, IState> {
     constructor(props: any) {
@@ -42,7 +42,8 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
             loaded: 0,
             status: Sound.status.STOPPED,
             playedMusic: {} as any,
-            queueOpened: false
+            queueOpened: false,
+            shuffle: false
         };
 
         this.playOrPause = this.playOrPause.bind(this);
@@ -53,15 +54,18 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
         this.setPosition = this.setPosition.bind(this);
         this.setVolume = this.setVolume.bind(this);
         this.toggleQueueModal = this.toggleQueueModal.bind(this);
+        this.playPrev = this.playPrev.bind(this);
+        this.playNext = this.playNext.bind(this);
+        this.toggleShuffle = this.toggleShuffle.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
-        if (!nextProps.music.author || !nextProps.music.filename) {
+        if (!nextProps.playedMusic.music.author || !nextProps.playedMusic.music.filename) {
             return prevState;
         }
         return {
-            url: nextProps.music.filename,
-            music: nextProps.music,
+            url: nextProps.playedMusic.music.filename,
+            music: nextProps.playedMusic.music,
             status: nextProps.playedMusic.playing ? Sound.status.PLAYING : Sound.status.PAUSED,
             playedMusic: nextProps.playedMusic
         };
@@ -92,7 +96,23 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
     }
 
     handleFinish() {
-        // this.props.dispatch(changeMusicStatus(this.state.music, !this.state.playedMusic.playing));
+        this.props.dispatch(playNext(this.state.shuffle));
+    }
+
+    playPrev() {
+        this.props.dispatch(playPrev());
+    }
+
+    playNext() {
+        this.props.dispatch(playNext(this.state.shuffle));
+    }
+
+    toggleShuffle() {
+        this.setState( {
+            shuffle: !this.state.shuffle
+        },
+            () => this.props.dispatch(toggleShuffle(this.state.shuffle))
+        );
     }
 
     playOrPause() {
@@ -125,7 +145,10 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
         return (
             <div className="global-player">
                 <div className="global-player-controls">
-                    <div className="global-player-button" onClick={this.playOrPause}><i className={`fa ${this.getPlayIcon()}`}></i></div>
+                    <div className="step-button" onClick={this.playPrev}><i className="fa fa-step-backward"/></div>
+                    <div className="global-player-button" onClick={this.playOrPause}><i className={`fa ${this.getPlayIcon()}`}/></div>
+                    <div className="step-button" onClick={this.playNext}><i className="fa fa-step-forward"/></div>
+                    <div className={`additional-button ${this.state.shuffle ? 'active' : ''}`} onClick={this.toggleShuffle}><i className="fa fa-random"/></div>
                 </div>
                 <div className="global-player-info">
                     <div className="title">{this.state.music.author.title}</div>

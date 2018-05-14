@@ -98,7 +98,7 @@ export function getOne(req: Request, res: Response) {
 }
 
 
-export function getAllProfileMusic(req: Request, res: Response) {
+export function getAllProfileMusic(req: Request & { user }, res: Response) {
 
 	return Music
 		.find({ creator: req.user.id })
@@ -153,7 +153,7 @@ export function edit(req: Request, res: Response) {
 export function deleteMusic(req: Request, res: Response) {
 
 	const unlinkFile: Function = Promise.promisify(fs.unlink);
-	let deletedMusicDoc: IMusic;
+	let deletedMusicDoc: any;
 
 	return Music
 		.findOneAndRemove({ id: req.params.id })

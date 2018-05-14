@@ -3,10 +3,10 @@ import * as bcrypt from 'bcryptjs';
 
 
 export interface IUser extends Document {
-  username: string
-  password: string
-  salt: string
-  admin: boolean
+	username: string
+	password: string
+	salt: string
+	admin: boolean
 }
 
 const userSchema: Schema = new Schema({
