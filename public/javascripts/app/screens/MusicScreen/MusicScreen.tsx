@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as toastr from 'toastr';
+import toast from '../../common/utils/toast';
 import {SingleMusicPlayer} from '../../components/SingleMusicPlayer';
 import {MusicService} from '../../services';
 import {IMusic} from "../../common/interfaces";
@@ -23,7 +23,7 @@ export class MusicScreen extends React.Component<any, IState> {
     }
 
     componentDidCatch(error: Error) {
-        toastr.error(error.toString());
+        toast.error(error.toString());
     }
 
     async fetchMusic(id: string) {
@@ -33,7 +33,7 @@ export class MusicScreen extends React.Component<any, IState> {
                 music: music.data
             });
         } catch (err) {
-            toastr.error(err.response.data.message || err.response.data);
+            toast.error(err.response.data.message || err.response.data);
         }
     }
 

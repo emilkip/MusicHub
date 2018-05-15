@@ -9,3 +9,43 @@
   color: #777;
   font-size: 20px;
 }
+
+.played-music-toast {
+  display: flex;
+  flex-direction: row;
+
+  .cover {
+    width: 60px;
+    height: 60px;
+    background-color: #ddd;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+    align-items: start;
+    justify-content: center;
+
+    .title {
+      color: #555;
+      font-size: 18px;
+    }
+    .author {
+      color: #888;
+      font-size: 12px;
+    }
+
+    .title,
+    .author {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}

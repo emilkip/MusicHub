@@ -6,6 +6,7 @@ import * as flash from 'connect-flash';
 import * as bodyParser from 'body-parser';
 import * as eSession from 'express-session';
 import * as passport from './configs/passport';
+import * as policy from './policies';
 import './configs/mongo';
 
 import routes from './routes/index';
@@ -37,7 +38,7 @@ app.use(Express.static(path.join(__dirname, '../public')));
 app.use('/libs', Express.static('node_modules'));
 
 // Routes
-app.use('/api', api);
+app.use('/api', policy.isAuthorizedApi, api);
 app.use('/', routes);
 
 

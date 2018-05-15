@@ -2,6 +2,7 @@ import * as React from 'react';
 import {IMusic} from "../common/interfaces";
 import {connect} from "react-redux";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
+import toast from '../common/utils/toast';
 import {playOne, pushMusicToQueue, changeMusicStatus} from '../actions/playerQueueActions'
 import 'styleAlias/player.scss';
 
@@ -69,6 +70,7 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
     addToQueue() {
         if (!this.state.music || !this.state.music.filename) return;
         this.props.dispatch(pushMusicToQueue(this.state.music));
+        toast.success('Added to queue');
     }
 
     render() {

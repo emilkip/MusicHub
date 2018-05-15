@@ -1,12 +1,13 @@
 import * as React from 'react';
-import * as toastr from "toastr";
 import {connect} from "react-redux";
 import {MusicList, Search} from '../../components';
 import {MusicService} from "../../services";
 import {getMusic} from "../../actions/musicActions";
 import {IMusic} from "../../common/interfaces";
 import {IReduxAction} from "../../common/interfaces/CommonInterfaces";
+import toast from '../../common/utils/toast';
 import 'styleAlias/music-list.scss';
+
 
 
 interface IProps {
@@ -40,7 +41,7 @@ export class HomeScreen extends React.Component<IProps, IState> {
             const musicList = await MusicService.getAll();
             this.props.dispatch(getMusic(musicList.data));
         } catch (err) {
-            toastr.error(err.message || err);
+            toast.error(err.message || err);
         }
     }
 

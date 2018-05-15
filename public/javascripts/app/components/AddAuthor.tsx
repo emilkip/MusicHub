@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Modal from 'react-modal';
-import * as toastr from 'toastr';
+import toast from '../common/utils/toast';
 import ModalStyle from '../common/styles/AddModalStyle'
 import {AuthorService} from "../services";
 
@@ -47,7 +47,7 @@ export class AddAuthor extends React.Component<IAddAuthorProps, IAddAuthorState>
             this.props.onAuthorCreate(newAuthor.data);
             this.closeModal();
         } catch(err) {
-            toastr.error(err.response.data.message || err.response.data);
+            toast.error(err.response.data.message || err.response.data);
         }
     }
 

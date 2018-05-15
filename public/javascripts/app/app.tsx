@@ -5,7 +5,6 @@ import {LayoutScreen} from './screens';
 import {UserService} from './services';
 import {setUser} from "./actions/profileActions";
 
-import '../../../node_modules/toastr/toastr.scss'
 
 interface IProps {
     dispatch?: (action: any) => void

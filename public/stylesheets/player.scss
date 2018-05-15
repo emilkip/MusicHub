@@ -257,14 +257,35 @@
 }
 
 .global-player-info {
+  display: flex;
+  flex-direction: row;
   margin: 0 20px;
 
-  .title {
-    color: #333;
+  .cover {
+    width: 70px;
+    height: 70px;
+    background-color: #dedede;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
-  .author {
-    color: #777;
-    font-size: 12px;
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 15px;
+
+    .title {
+      color: #333;
+    }
+    .author {
+      color: #777;
+      font-size: 12px;
+    }
   }
 
   .title,

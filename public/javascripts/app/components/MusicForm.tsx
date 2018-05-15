@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as toastr from 'toastr';
 import {connect} from 'react-redux';
+import toast from '../common/utils/toast';
 import {FileUpload, AddAuthor, AddAlbum, FormSelect} from "./";
 import {createMusic} from "../actions/musicActions";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
@@ -77,7 +77,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
                 genres: fetchedData[1].data || []
             });
         } catch (err) {
-            toastr.error(err.response.data.message || err.response.data);
+            toast.error(err.response.data.message || err.response.data);
         }
     }
 
@@ -88,7 +88,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
                 albums: response.data.albums
             });
         } catch (err) {
-            toastr.error(err.response.data.message || err.response.data);
+            toast.error(err.response.data.message || err.response.data);
         }
     }
 
@@ -98,7 +98,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
             this.props.dispatch(createMusic(createdTrack.data));
             history.push('/');
         } catch (err) {
-            toastr.error(err.response.data.message || err.response.data);
+            toast.error(err.response.data.message || err.response.data);
         }
     }
 

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {Progress, VolumeBar, QueueModal} from '../';
 import {connect} from "react-redux";
+import {Progress, VolumeBar, QueueModal, PlayedMusicToast} from '../';
 import {IMusic} from "../../common/interfaces";
+import toast from '../../common/utils/toast';
 import {changeMusicStatus, playNext, playPrev, toggleShuffle} from "../../actions/playerQueueActions";
 import 'styleAlias/player.scss';
 
@@ -33,7 +34,8 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
         super(props);
         this.state = {
             music: {
-                author: {}
+                author: {},
+                album: {}
             } as any,
             url: '',
             position: 0,
@@ -73,6 +75,16 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
 
     componentDidUpdate(prevProps: any, prevState: any) {
         if (this.state.music._id !== prevState.music._id) {
+            toast.customTemplate(
+                <PlayedMusicToast
+                    coverUrl={this.state.music.album.cover}
+                    title={this.state.music.title}
+                    author={this.state.music.author.title}/>,
+                {
+                    hideProgressBar: true
+                }
+            );
+
             return this.setState({
                 position: 0,
                 duration: 0,
@@ -96,7 +108,7 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
     }
 
     handleFinish() {
-        this.props.dispatch(playNext(this.state.shuffle));
+        this.props.dispatch(playNext());
     }
 
     playPrev() {
@@ -104,13 +116,13 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
     }
 
     playNext() {
-        this.props.dispatch(playNext(this.state.shuffle));
+        this.props.dispatch(playNext());
     }
 
     toggleShuffle() {
-        this.setState( {
-            shuffle: !this.state.shuffle
-        },
+        this.setState({
+                shuffle: !this.state.shuffle
+            },
             () => this.props.dispatch(toggleShuffle(this.state.shuffle))
         );
     }
@@ -141,18 +153,29 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
         })
     }
 
+    getCover(cover: string) {
+        return `/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/full')}`;
+    }
+
     render() {
         return (
             <div className="global-player">
                 <div className="global-player-controls">
                     <div className="step-button" onClick={this.playPrev}><i className="fa fa-step-backward"/></div>
-                    <div className="global-player-button" onClick={this.playOrPause}><i className={`fa ${this.getPlayIcon()}`}/></div>
+                    <div className="global-player-button" onClick={this.playOrPause}><i
+                        className={`fa ${this.getPlayIcon()}`}/></div>
                     <div className="step-button" onClick={this.playNext}><i className="fa fa-step-forward"/></div>
-                    <div className={`additional-button ${this.state.shuffle ? 'active' : ''}`} onClick={this.toggleShuffle}><i className="fa fa-random"/></div>
+                    <div className={`additional-button ${this.state.shuffle ? 'active' : ''}`}
+                         onClick={this.toggleShuffle}><i className="fa fa-random"/></div>
                 </div>
                 <div className="global-player-info">
-                    <div className="title">{this.state.music.author.title}</div>
-                    <div title={this.state.music.title || 'Unknown'} className="author">{this.state.music.title}</div>
+                    <div className="cover">
+                        <img src={this.getCover(this.state.music.album.cover)} alt=""/>
+                    </div>
+                    <div className="info">
+                        <div className="title">{this.state.music.author.title}</div>
+                        <div className="author" title={this.state.music.title || 'Unknown'}>{this.state.music.title}</div>
+                    </div>
                 </div>
                 <div className="global-player-progress">
                     <Progress position={this.state.position}
@@ -165,8 +188,9 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
                     <VolumeBar volume={this.state.volume} setVolume={this.setVolume}/>
                 </div>
                 <div className="global-player-queue-btn">
-                    <div className={`global-player-queue ${this.state.queueOpened ? 'active' : ''}`} onClick={this.toggleQueueModal}>
-                        <span className="fa fa-chevron-up" />
+                    <div className={`global-player-queue ${this.state.queueOpened ? 'active' : ''}`}
+                         onClick={this.toggleQueueModal}>
+                        <span className="fa fa-chevron-up"/>
                         <span>Playback queue</span>
                     </div>
                 </div>

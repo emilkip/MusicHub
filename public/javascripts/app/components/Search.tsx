@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {MusicService} from '../services';
 import {connect} from "react-redux";
-import * as toastr from "toastr";
+import toast from '../common/utils/toast';
 import {getResults} from "../actions/searchAction";
-import 'styleAlias/music-list.scss';
 import history from "../configs/history";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
+import 'styleAlias/music-list.scss';
 
 
 interface IState {
@@ -38,7 +38,7 @@ export class Search extends React.Component<IProps, IState> {
             this.props.dispatch(getResults(musicList.data));
             history.push('/search_result');
         } catch (err) {
-            toastr.error(err.message || err);
+            toast.error(err.message || err);
         }
     }
 

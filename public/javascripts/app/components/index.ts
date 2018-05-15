@@ -14,6 +14,7 @@ export {Routing} from './Routing';
 export {Search} from './Search';
 export {EmptyListMsg} from './EmptyListMsg';
 export {AlbumListItem} from './AlbumListItem';
+export {PlayedMusicToast} from './playedMuscToast';
 export {Player} from './player/Player';
 export {GlobalPlayer} from './player/GlobalPlayer';
 export {Progress} from './player/Progress';

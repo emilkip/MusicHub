@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Modal from 'react-modal';
-import * as toastr from 'toastr';
+import toast from '../common/utils/toast';
 import {AlbumService} from "../services";
 import ModalStyle from '../common/styles/AddModalStyle'
 import {FormSelect, FileUpload} from "./";
@@ -59,7 +59,7 @@ export class AddAlbum extends React.Component<IProps, IState> {
             await AlbumService.createAlbum(this.state.newAlbum);
             this.closeModal();
         } catch(err) {
-            toastr.error(err.response.data.message || err.response.data);
+            toast.error(err.response.data.message || err.response.data);
         }
     }
 

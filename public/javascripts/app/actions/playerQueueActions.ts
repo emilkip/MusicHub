@@ -29,7 +29,7 @@ export function playOne(music: IMusic): IReduxAction {
     }
 }
 
-export function playNext(shuffle: boolean): IReduxAction {
+export function playNext(): IReduxAction {
     return {
         type: 'PLAY_NEXT',
         payload: {}
