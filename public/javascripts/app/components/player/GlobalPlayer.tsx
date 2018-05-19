@@ -154,7 +154,7 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
     }
 
     getCover(cover: string) {
-        return `/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/full')}`;
+        return `/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/thumbnail')}`;
     }
 
     render() {

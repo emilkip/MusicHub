@@ -67,4 +67,10 @@ api.post('/playlist/:id/delete', Playlist.deletePlaylist);
 api.post('/playlist/add', Playlist.createPlaylist);
 
 
+//=======================================
+// Other
+//=======================================
+api.get('/logout', Playlist.getPlaylist);
+
+
 export default api;

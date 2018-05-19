@@ -40,8 +40,8 @@ export class AddAlbum extends React.Component<IProps, IState> {
         this.closeModal = this.closeModal.bind(this);
         this.createAlbum = this.createAlbum.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.validate = this.validate.bind(this);
     }
-
 
     componentWillReceiveProps(props: IProps) {
         this.setState({
@@ -54,7 +54,21 @@ export class AddAlbum extends React.Component<IProps, IState> {
         this.props.onModalClose();
     }
 
+    validate() {
+        if (!this.state.newAlbum.title.length || this.state.newAlbum.title.length > 50) {
+            toast.warn('An album name should not be empty or longer than 50 symbols');
+            return false;
+        }
+        if (!this.state.newAlbum.author) {
+            toast.warn('Choose author');
+            return false;
+        }
+        return true;
+    }
+
     async createAlbum() {
+        if (!this.validate()) return;
+
         try {
             await AlbumService.createAlbum(this.state.newAlbum);
             this.closeModal();

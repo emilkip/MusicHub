@@ -6,5 +6,6 @@ export {MusicCreateScreen} from './MusicCreateScreen/MusicCreateScreen';
 export {MusicEditScreen} from './MusicEditScreen/MusicEditScreen';
 export {MusicScreen} from './MusicScreen/MusicScreen';
 export {PlaylistScreen} from './PlaylistScreen/PlaylistScreen';
+export {PlaylistCreateScreen} from './PlaylistCreateScreen/PlaylistCreateScreen';
 export {ProfileScreen} from './ProfileScreen/ProfileScreen';
 export {SearchResultScreen} from './SearchResultScreen/SearchResultScreen';

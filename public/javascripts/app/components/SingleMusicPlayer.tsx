@@ -3,7 +3,7 @@ import {IMusic} from "../common/interfaces";
 import {connect} from "react-redux";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
 import toast from '../common/utils/toast';
-import {playOne, pushMusicToQueue, changeMusicStatus} from '../actions/playerQueueActions'
+import {playOne, pushMusicToQueue, removeMusicFromQueue, changeMusicStatus} from '../actions/playerQueueActions'
 import 'styleAlias/player.scss';
 
 interface IProps {
@@ -13,6 +13,7 @@ interface IProps {
 
 interface IState extends IProps {
     playing: boolean
+    inQueue: boolean
     playedMusic: {
         music: IMusic
         playing: boolean
@@ -21,6 +22,7 @@ interface IState extends IProps {
 
 
 @(connect((state: any) => ({
+    musicList: state.playerQueueReducer.musicList || [],
     playedMusic: state.playerQueueReducer.playedMusic || {}
 })) as any)
 export class SingleMusicPlayer extends React.Component<IProps, IState> {
@@ -29,23 +31,25 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
         this.state = {
             music: props.music,
             playing: false,
-            playedMusic: {} as any
+            playedMusic: {} as any,
+            inQueue: false
         };
 
         this.togglePlay = this.togglePlay.bind(this);
-        this.addToQueue = this.addToQueue.bind(this);
+        this.addOrRemoveToQueue = this.addOrRemoveToQueue.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         return {
             music: nextProps.music,
             playedMusic: nextProps.playedMusic,
+            inQueue: SingleMusicPlayer.isMusicInTheQueue(nextProps.musicList, nextProps.music._id),
             playing: (nextProps.music._id === nextProps.playedMusic.music._id) ? nextProps.playedMusic.playing : false
         }
     }
 
-    componentDidMount() {
-        // this.props.dispatch(fetchPlayerStatus());
+    static isMusicInTheQueue(list: any[] = [], musicId: string) {
+        return list.some((music) => music._id === musicId);
     }
 
     getCover(cover: string) {
@@ -67,10 +71,18 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
         });
     }
 
-    addToQueue() {
+    addOrRemoveToQueue() {
         if (!this.state.music || !this.state.music.filename) return;
-        this.props.dispatch(pushMusicToQueue(this.state.music));
-        toast.success('Added to queue');
+
+        if (this.state.inQueue) {
+            this.props.dispatch(removeMusicFromQueue(this.state.music._id));
+        } else {
+            this.props.dispatch(pushMusicToQueue(this.state.music));
+        }
+        this.setState({
+            inQueue: !this.state.inQueue
+        });
+        toast.success(this.state.inQueue ? 'Removed from queue' : 'Added to queue');
     }
 
     render() {
@@ -99,8 +111,8 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
                     <div className="music-inf">
                         <div className="music-info-table">
                             <div className="mit-title">{this.state.music.title || 'Unknown'}</div>
-                            <div className="mit-other">{this.state.music.author.title || 'Unknown'}</div>
                             <div className="mit-other">{this.state.music.album.title || 'Unknown'}</div>
+                            <div className="mit-author">{this.state.music.author.title || 'Unknown'}</div>
                         </div>
                         <div className="single-player-wrapper">
                             {
@@ -108,7 +120,9 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
                                     <div className="play-button" onClick={this.togglePlay}><img src="/images/equalizer.svg" /></div> :
                                     <div className="play-button" onClick={this.togglePlay}><span className="fa fa-play" /></div>
                             }
-                            <div className="play-button" onClick={this.addToQueue}><span className="fa fa-plus" /></div>
+                            <div className="play-button" title="Add or remove" onClick={this.addOrRemoveToQueue}>
+                                <span className={`fa ${this.state.inQueue ? 'fa-times' : 'fa-plus'}`} />
+                            </div>
                         </div>
                     </div>
                 </div>

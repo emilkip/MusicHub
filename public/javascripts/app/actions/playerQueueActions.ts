@@ -20,6 +20,15 @@ export function pushMusicToQueue(music: IMusic): IReduxAction {
     }
 }
 
+export function removeMusicFromQueue(musicId: string): IReduxAction {
+    return {
+        type: 'REMOVE_MUSIC_FROM_QUEUE',
+        payload: {
+            musicId
+        }
+    }
+}
+
 export function playOne(music: IMusic): IReduxAction {
     return {
         type: 'PLAY_ONE',

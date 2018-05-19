@@ -1,27 +1,35 @@
 import * as React from 'react';
 import {IAlbum, IMusic} from "../../common/interfaces";
 import {AlbumService} from "../../services";
-import {Progress} from "../../components";
+import {connect} from "react-redux";
 import 'styleAlias/album.scss';
+import {changeMusicStatus, playOne} from "../../actions/playerQueueActions";
 
-const Sound = require('react-sound').default;
-
+interface IProps {
+    dispatch?: (action: any) => void
+    match: any
+    playedMusic: {
+        music: IMusic
+        playing: boolean
+    }
+}
 
 interface IState {
     album: IAlbum
     musicList: IMusic[]
     albumId: string
-    currentMusic: any
-    url?: string
-    position?: number
-    duration?: number
-    volume?: number
-    status?: string
-    loaded?: number
+    playedMusic: {
+        music: IMusic
+        playing: boolean
+    }
 }
 
-export class AlbumScreen extends React.Component<any, IState> {
-    constructor(props: any) {
+@(connect((state: any) => ({
+    musicList: state.playerQueueReducer.musicList || [],
+    playedMusic: state.playerQueueReducer.playedMusic || {}
+})) as any)
+export class AlbumScreen extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             album: {
@@ -29,20 +37,21 @@ export class AlbumScreen extends React.Component<any, IState> {
             } as any,
             musicList: [],
             albumId: props.match.params.id,
-            currentMusic: {},
-            url: props.url,
-            position: 0,
-            duration: 0,
-            volume: 50,
-            loaded: 0,
-            status: Sound.status.STOPPED
+            playedMusic: {
+                music: {} as any,
+                playing: false
+            }
         };
 
         this.renderMusicList = this.renderMusicList.bind(this);
         this.fetchMusicForAlbum = this.fetchMusicForAlbum.bind(this);
-        this.setPosition = this.setPosition.bind(this);
-        this.handlePlaying = this.handlePlaying.bind(this);
         this.fetchMusicForAlbum();
+    }
+
+    static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
+        return {
+            playedMusic: nextProps.playedMusic || {},
+        }
     }
 
     async fetchMusicForAlbum() {
@@ -58,46 +67,27 @@ export class AlbumScreen extends React.Component<any, IState> {
         return `/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/full')}`;
     }
 
-    setPosition(value: number) {
-        this.setState({
-            position: this.state.duration / 100 * value
-        });
-    }
-
-    handlePlaying(audio: any) {
-        this.setState({
-            position: audio.position,
-            duration: audio.duration
-        });
-    }
-
     togglePlay(music: IMusic) {
-        if (music._id === this.state.currentMusic._id) {
-            this.setState({
-                status: Sound.status.PAUSED
-            });
+        if (!music || !music.filename) return;
+
+        if (this.state.playedMusic.music._id === music._id) {
+            return this.props.dispatch(changeMusicStatus(music, !this.state.playedMusic.playing));
         }
-        this.setState({
-            currentMusic: music,
-            url: music.filename,
-            position: 0,
-            status: Sound.status.PLAYING
-        });
+        this.props.dispatch(changeMusicStatus(music, true));
+        this.props.dispatch(playOne(music));
     }
 
     renderMusicList() {
         return this.state.musicList.map((music) => {
             const uKey: string = Math.random().toString(36).substr(2, 9);
             return (
-                <div key={uKey} className="album-music-item flex-row">
-
-                    <img className="equalizer-icon" src="/images/equalizer.svg" alt="" onClick={() => this.togglePlay(music)}/>
-                    <span>{music.title}</span>
-                    <Progress status={this.state.status}
-                              duration={this.state.duration}
-                              position={this.state.position}
-                              loaded={this.state.loaded}
-                              setPosition={this.setPosition}/>
+                <div key={uKey} className="album-music-item" onClick={() => this.togglePlay(music)}>
+                    {
+                        (music._id === this.state.playedMusic.music._id && this.state.playedMusic.playing) ?
+                            <div className="play"><img src="/images/equalizer.svg" /></div> :
+                            <div className="play"><span className="fa fa-play" /></div>
+                    }
+                    <div className="title">{music.title}</div>
                 </div>
             );
         });
@@ -116,14 +106,11 @@ export class AlbumScreen extends React.Component<any, IState> {
                     </div>
                 </div>
                 <div className="album-screen-music-list">
-                    {this.renderMusicList()}
+                    <h3>Track list</h3>
+                    <div>
+                        {this.renderMusicList()}
+                    </div>
                 </div>
-
-                <Sound url={`/audio/${this.state.url}`}
-                       volume={this.state.volume}
-                       onPlaying={this.handlePlaying}
-                       position={this.state.position}
-                       playStatus={this.state.status}/>
             </div>
         );
     }

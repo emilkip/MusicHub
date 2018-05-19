@@ -29,6 +29,7 @@ export class AddAuthor extends React.Component<IAddAuthorProps, IAddAuthorState>
         this.closeModal = this.closeModal.bind(this);
         this.createAuthor = this.createAuthor.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.validate = this.validate.bind(this);
     }
 
     componentWillReceiveProps(props: IAddAuthorProps) {
@@ -41,7 +42,17 @@ export class AddAuthor extends React.Component<IAddAuthorProps, IAddAuthorState>
         this.props.onModalClose();
     }
 
+    validate() {
+        if (!this.state.authorName.length || this.state.authorName.length > 50) {
+            toast.warn('An author name should not be empty or longer than 50 symbols');
+            return false;
+        }
+        return true;
+    }
+
     async createAuthor() {
+        if (!this.validate()) return;
+
         try {
             const newAuthor = await AuthorService.createAuthor({ title: this.state.authorName });
             this.props.onAuthorCreate(newAuthor.data);

@@ -17,6 +17,11 @@ const playlistSchema: Schema = new Schema({
 		ref: 'User',
 		type: Schema.Types.ObjectId,
 		required: true
+	},
+	type: {
+		type: String,
+		enum: ['private', 'public', 'favorite'],
+		required: true
 	}
 });
 

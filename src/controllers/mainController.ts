@@ -35,8 +35,7 @@ export function createUser(req: Request, res: Response, next: NextFunction) {
 
 
 export function logout(req: Request & { logout }, res: Response) {
-	req.logout();
-	return res.redirect('/');
+	return req.logout();
 }
 
 
@@ -45,7 +44,3 @@ export function reg(req: Request & { flash }, res: Response) {
 	return res.render('reg', { error });
 }
 
-
-export function currentUser(req: Request & { user }, res: Response) {
-	return res.status(200).json(req.user);
-}

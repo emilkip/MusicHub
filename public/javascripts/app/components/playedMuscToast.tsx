@@ -7,7 +7,7 @@ interface IProps {
 }
 
 export const PlayedMusicToast = ({ coverUrl, title, author }: IProps) => {
-    const getCover = (cover: string) => (`/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/full')}`);
+    const getCover = (cover: string) => (`/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/thumbnail')}`);
 
     return (
         <div className="played-music-toast">

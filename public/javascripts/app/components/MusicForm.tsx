@@ -55,6 +55,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
         this.toggleAlbumModal = this.toggleAlbumModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.onAuthorCreate = this.onAuthorCreate.bind(this);
+        this.validate = this.validate.bind(this);
         this.createTrack = this.createTrack.bind(this);
     }
 
@@ -92,7 +93,33 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
         }
     }
 
+    validate() {
+        if (!this.state.newMusic.title.length || this.state.newMusic.title.length > 100) {
+            toast.warn('A title should not be empty or longer than 100 symbols');
+            return false;
+        }
+        if (!this.state.newMusic.author.length) {
+            toast.warn('Choose author');
+            return false;
+        }
+        if (!this.state.newMusic.album.length) {
+            toast.warn('Choose album');
+            return false;
+        }
+        if (!this.state.newMusic.genre.length) {
+            toast.warn('Choose genre');
+            return false;
+        }
+        if (!this.state.newMusic.file) {
+            toast.warn('Choose audio file to upload');
+            return false;
+        }
+        return true;
+    }
+
     async createTrack() {
+        if (!this.validate()) return;
+
         try {
             const createdTrack = await MusicService.create(this.state.newMusic);
             this.props.dispatch(createMusic(createdTrack.data));

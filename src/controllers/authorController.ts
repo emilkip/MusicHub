@@ -39,6 +39,12 @@ export async function createAuthor(req: Request, res: Response) {
     const slugTitle: string = slug(author.title).toLowerCase();
 
     try {
+        const existingAuthor: IAuthor = await Author.findOne({ title: author.title });
+
+        if (existingAuthor) {
+            return res.status(409).json({ message: 'An author with this name already exists' });
+        }
+
         const newAuthor: IAuthor = await Author.create({ title: author.title, slug: slugTitle });
         return res.status(200).json(newAuthor);
     } catch (err) {

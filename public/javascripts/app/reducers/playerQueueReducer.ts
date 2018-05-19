@@ -54,6 +54,15 @@ export function playerQueueReducer(state: IDefaultState = defaultState, action: 
                 musicList: [...state.musicList, action.payload.music]
             };
         },
+        REMOVE_MUSIC_FROM_QUEUE(): IDefaultState {
+            const filteredMusicList: IMusic[] = state.musicList.filter((music) => music._id !== action.payload.musicId);
+
+            return {
+                ...state,
+                baseMusicList: [...filteredMusicList],
+                musicList: [...filteredMusicList]
+            };
+        },
         PLAY_ONE(): IDefaultState {
             const musicInList: any = state.musicList.find((music) => music._id === action.payload.music._id);
 
@@ -61,7 +70,8 @@ export function playerQueueReducer(state: IDefaultState = defaultState, action: 
 
             return {
                 ...state,
-                musicList: [action.payload.music]
+                musicList: [action.payload.music],
+                baseMusicList: [action.payload.music]
             };
         },
         PLAY_NEXT(): IDefaultState {
@@ -94,6 +104,7 @@ export function playerQueueReducer(state: IDefaultState = defaultState, action: 
             let musicList: IMusic[] = [];
 
             if (action.payload.shuffle) {
+                debugger
                 musicList = shuffleMusicList([...state.baseMusicList], state.playedMusic.music);
             } else {
                 musicList = state.baseMusicList;

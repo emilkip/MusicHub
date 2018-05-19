@@ -9,13 +9,11 @@ router.get('/login', policy.isNotAuthorized, Main.loginPage);
 
 router.post('/login', policy.isNotAuthorized, Main.login);
 
-router.get('/logout', policy.isNotAuthorized, Main.logout);
+router.get('/logout', policy.isAuthorizedApi, Main.logout);
 
 router.get('/reg', policy.isNotAuthorized, Main.reg);
 
 router.post('/reg', policy.isNotAuthorized, Main.createUser);
-
-router.get('/current_user', Main.currentUser);
 
 router.get('*', policy.isAuthorized, Main.mainPage);
 
