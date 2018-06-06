@@ -6,6 +6,7 @@ import { IUser } from './User';
 export interface IPlaylist extends Document {
 	title: string
   	owner: IUser
+    type: string
 }
 
 const playlistSchema: Schema = new Schema({

@@ -1,19 +1,22 @@
 import { IReduxAction } from "../common/interfaces/CommonInterfaces";
+import {IAlbum, IAuthor, IMusic, IPlaylist} from "../common/interfaces";
 
 interface IResult {
-    musicList: any[]
-    albums: any[]
-    authors: any[]
+    musicList: IMusic[]
+    albums: IAlbum[]
+    authors: IAuthor[]
+    playlists: IPlaylist[]
 }
 
 
-export function getResults(searchResult: IResult): IReduxAction {
+export function putResults(searchResult: IResult): IReduxAction {
     return {
-        type: 'GET_RESULTS',
+        type: 'PUT_RESULTS',
         payload: {
             musicList: searchResult.musicList,
             albums: searchResult.albums,
-            authors: searchResult.authors
+            authors: searchResult.authors,
+            playlists: searchResult.playlists
         }
     }
 }
@@ -27,6 +30,6 @@ export function clearResults(): IReduxAction {
 
 
 export default {
-    getResults,
+    putResults,
     clearResults
 }

@@ -63,6 +63,17 @@ export function playerQueueReducer(state: IDefaultState = defaultState, action: 
                 musicList: [...filteredMusicList]
             };
         },
+        PLAY_MANY(): IDefaultState {
+            return {
+                ...state,
+                musicList: action.payload.musicList,
+                baseMusicList: action.payload.musicList,
+                playedMusic: {
+                    music: action.payload.musicList[0],
+                    playing: true
+                }
+            };
+        },
         PLAY_ONE(): IDefaultState {
             const musicInList: any = state.musicList.find((music) => music._id === action.payload.music._id);
 

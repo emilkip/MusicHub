@@ -1,0 +1,166 @@
+@import "mixins";
+
+.playlists {
+  .list {
+    .item,
+    .item-music {
+      border: 1px solid #dedede;
+      display: flex;
+      position: relative;
+
+      .title {
+        font-size: 24px;
+      }
+
+      &:hover {
+        border-color: #333;
+        cursor: pointer;
+      }
+    }
+
+    .item {
+      flex-direction: column;
+      justify-content: center;
+      padding: 15px;
+      position: relative;
+
+      .count {
+        font-size: 14px;
+        color: #aaa;
+      }
+
+      .owner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 5px;
+        background-color: #333;
+        color: #fff;
+        font-size: 12px;
+      }
+    }
+
+    .item-music {
+      border: 1px solid #dedede;
+      display: flex;
+      flex-direction: row;
+      height: 100px;
+
+      .data {
+        padding: 15px;
+        width: calc(100% - 100px);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .author {
+        font-size: 14px;
+        color: #aaa;
+      }
+
+      .cover {
+        height: 100%;
+        width: 100px;
+        overflow: hidden;
+
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.playlist-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.list-of-playlist {
+  .list-of-playlist-item {
+    border: 1px solid #dedede;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+    position: relative;
+
+    .list-of-playlist-count {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .list-of-playlist-owner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 5px;
+      background-color: #333;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .list-of-playlist-title {
+      font-size: 24px;
+    }
+
+    &:hover {
+      border-color: #333;
+      cursor: pointer;
+    }
+  }
+}
+
+.playlist-create {
+
+}
+
+.playlist-create-header {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.playlist-form {
+  flex-grow: 1;
+
+  .form-select {
+    width: 200px;
+    margin-bottom: 20px;
+  }
+
+  .list {
+    border: 1px solid #dedede;
+    height: 500px;
+    background-color: #eee;
+    overflow-y: scroll;
+
+    .item {
+      padding: 15px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 1px solid #eee;
+      background-color: #fff;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .remove {
+      @include circle-black-button(50px, 20px);
+    }
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+
+}

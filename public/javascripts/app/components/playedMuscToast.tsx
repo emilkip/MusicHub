@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {buildCoverUrl} from '../common/utils/cover';
 
 interface IProps {
     coverUrl: string
@@ -7,12 +8,10 @@ interface IProps {
 }
 
 export const PlayedMusicToast = ({ coverUrl, title, author }: IProps) => {
-    const getCover = (cover: string) => (`/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/thumbnail')}`);
-
     return (
         <div className="played-music-toast">
             <div className="cover">
-                <img src={getCover(coverUrl)} alt=""/>
+                <img src={buildCoverUrl(coverUrl, 'thumbnail')} alt=""/>
             </div>
             <div className="info">
                 <div className="title">{title}</div>

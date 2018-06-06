@@ -2,8 +2,8 @@ import * as React from 'react';
 
 interface IProps {
     type?: string
-    valueField: string
-    labelField: string
+    valueField?: string
+    labelField?: string
     options: any[]
     onSelect: (event: any) => void
 }
@@ -26,7 +26,7 @@ export class FormSelect extends React.Component<IProps, IState> {
             options: props.options || [],
             valueField: props.valueField,
             labelField: props.labelField,
-            renderedOptions: []
+            renderedOptions: [],
         };
     }
 
@@ -45,7 +45,9 @@ export class FormSelect extends React.Component<IProps, IState> {
 
     static renderOptions(options: any[], valueField: string, labelField: string): JSX.Element[] {
         return options.map((option: any, i: number) => {
-            return(<option key={i} value={option[valueField]}>{option[labelField]}</option>);
+            if (!valueField) return (<option key={i} value={option}>{option}</option>);
+
+            return (<option key={i} value={option[valueField]}>{option[labelField]}</option>);
         });
     }
 

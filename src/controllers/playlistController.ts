@@ -1,15 +1,67 @@
 import { Request, Response } from "express";
-import * as Promise from 'bluebird';
-import { Playlist } from "../models/Playlist";
+import * as Bluebird from 'bluebird';
+import {IPlaylist, Playlist} from "../models/Playlist";
 import { PlaylistItem } from "../models/PlaylistItem";
+import {Album} from "../models/Album";
+import {Author} from "../models/Author";
 
+
+export async function getPlaylists(req: Request, res: Response) {
+	return Playlist
+		.find({ type: 'public' })
+		.populate('owner')
+		.limit(10)
+		.then((playlists) => {
+			if (!playlists) {
+				return Bluebird.resolve([]);
+			}
+
+			return Bluebird.map(playlists, (playlist: any) => {
+                return PlaylistItem.count({ playlist: playlist._id }).then((musicCount) => {
+                    playlist._doc.count = musicCount;
+                	return playlist;
+				});
+            });
+		})
+		.then((results) => {
+            return res.status(200).json(results);
+		})
+		.catch((err) => {
+            console.log(err);
+			return res.status(500).json(err);
+		});
+}
 
 export function getPlaylist(req: Request, res: Response) {
 
+	let playlist;
+
 	return Playlist
-		.findOne({ id: req.params.id })
-		.then((playlist) => {
-			return res.status(200).json(playlist);
+		.findOne({ _id: req.params.id })
+        .populate('owner')
+		.then((_playlist) => {
+			if (!_playlist) {
+				return Promise.reject({})
+			}
+            playlist = _playlist;
+			return PlaylistItem.find({ playlist: _playlist._id }).populate('music');
+		})
+		.then((musicList) => {
+			return Album.populate(musicList, {
+				path: 'music.album'
+			});
+		})
+		.then((musicList) => {
+			return Author.populate(musicList, {
+				path: 'music.author',
+				select: 'title'
+			});
+		})
+		.then((musicList) => {
+            return res.status(200).json({
+				playlist,
+                musicList
+			});
 		})
 		.catch((err) => {
 			console.log(err);
@@ -41,7 +93,7 @@ export function getPlaylistItem(req: Request, res: Response) {
 		.sort({ createdAt: 'desc' })
 		.then((items) => {
 			if (!items.length) {
-				return Promise.resolve([]);
+				return Bluebird.resolve([]);
 			}
 
 			// const musicIds = items.map((item) => )
@@ -73,22 +125,29 @@ export function getPlaylistItem(req: Request, res: Response) {
 
 export function createPlaylist(req: Request & { user }, res: Response) {
 
-	const body: any = req.body;
+	const { title, musicIds, type } = req.body;
 
 	return Playlist
-		.create({
-			title: body.title,
-			owner: req.user.id
+		.findOne({ title })
+		.then((playlist) => {
+			if (playlist) {
+                return Bluebird.reject({ message: 'Playlist with this name already exists' });
+			}
+			return Playlist.create({
+                title,
+                owner: req.user.id,
+                type: type || 'public'
+            })
 		})
 		.then((createdPlaylist) => {
-			const promises = body.music.map((item) => (
-                PlaylistItem.create({
-                    playlist: createdPlaylist.id,
-                    music: item.id
-                })
-			));
-			return Promise.all(promises)
-				.then(() => Promise.resolve(createdPlaylist));
+			return Bluebird
+				.map(musicIds, (musicId: string) => (
+					PlaylistItem.create({
+						playlist: createdPlaylist._id,
+						music: musicId
+					})
+				))
+				.then(() => Bluebird.resolve(createdPlaylist));
 		})
         .then((createdPlaylist) => {
             return res.status(200).json(createdPlaylist);

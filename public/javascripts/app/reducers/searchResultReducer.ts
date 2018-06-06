@@ -1,27 +1,30 @@
 import { IReduxAction } from "../common/interfaces/CommonInterfaces";
-import { IAuthor, IMusic, IAlbum } from "../common/interfaces";
+import {IAuthor, IMusic, IAlbum, IPlaylist} from "../common/interfaces";
 
 interface IDefaultState {
     musicList: IMusic[]
     albums: IAlbum[]
     authors: IAuthor[]
+    playlists: IPlaylist[]
 }
 
 const defaultState: IDefaultState = {
     musicList: [],
     albums: [],
-    authors: []
+    authors: [],
+    playlists: []
 };
 
 
 export function searchResultReducer(state: IDefaultState = defaultState, action: IReduxAction): IDefaultState {
 
     const actions: any = {
-        GET_RESULTS(): IDefaultState {
+        PUT_RESULTS(): IDefaultState {
             return {
-                musicList: action.payload.musicList,
-                albums: action.payload.albums,
-                authors: action.payload.authors
+                musicList: action.payload.musicList || [],
+                playlists: action.payload.playlists || [],
+                albums: action.payload.albums || [],
+                authors: action.payload.authors || []
             };
         },
         CLEAR_RESULTS(): IDefaultState {

@@ -1,15 +1,10 @@
 @import "mixins";
 
-.layout-container {
-  height: 100%;
-  padding: 30px 50px;
-}
-
 .music-list {
   margin-top: 50px;
 }
 
-.music-list-item {
+.music-grid-item {
   float: left;
   width: 300px;
   padding: 5px;
@@ -68,6 +63,40 @@
   &:hover .opacity-block {
     cursor: pointer;
     opacity: .6;
+  }
+}
+
+.music-list-item {
+  padding: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #eee;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #efefef;
+  }
+
+  .equalizer-icon {
+    width: 30px;
+    margin: 0 10px;
+  }
+
+  .title {
+    padding: 0 15px;
+  }
+
+  .play {
+    @include circle-black-button(30px, 10px);
+
+    padding: 5px;
+    overflow: hidden;
+
+    img {
+      width: 80%;
+    }
   }
 }
 

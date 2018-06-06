@@ -23,6 +23,10 @@ export function searchMusic(query: string) {
     return Axios.post('/api/music/search', { query });
 }
 
+export function searchAll(query: string) {
+    return Axios.post('/api/music/search_all', { query });
+}
+
 export function getByID(id: string) {
     return Axios.get(`/api/music/${id}`);
 }
@@ -32,5 +36,6 @@ export default {
     getByID,
     getAll,
     create,
-    searchMusic
+    searchMusic,
+    searchAll
 };

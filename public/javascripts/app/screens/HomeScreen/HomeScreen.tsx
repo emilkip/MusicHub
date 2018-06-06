@@ -1,18 +1,15 @@
 import * as React from 'react';
 import {connect} from "react-redux";
 import {MusicList, Search} from '../../components';
-import {MusicService} from "../../services";
-import {getMusic} from "../../actions/musicActions";
 import {IMusic} from "../../common/interfaces";
 import {IReduxAction} from "../../common/interfaces/CommonInterfaces";
-import toast from '../../common/utils/toast';
 import 'styleAlias/music-list.scss';
 
 
 
 interface IProps {
     musicList: IMusic[]
-    dispatch?(action: IReduxAction): void
+    dispatch?: (action: IReduxAction) => void
 }
 
 interface IState {
@@ -29,19 +26,8 @@ export class HomeScreen extends React.Component<IProps, IState> {
             musicList: props.musicList || []
         };
 
-        this.fetchMusicList = this.fetchMusicList.bind(this);
-
         if (!props.musicList.length) {
-            this.fetchMusicList();
-        }
-    }
-
-    async fetchMusicList() {
-        try {
-            const musicList = await MusicService.getAll();
-            this.props.dispatch(getMusic(musicList.data));
-        } catch (err) {
-            toast.error(err.message || err);
+            this.props.dispatch({ type: 'REQUEST_MUSIC_LIST' });
         }
     }
 

@@ -3,6 +3,7 @@ import {IMusic} from "../common/interfaces";
 import {connect} from "react-redux";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
 import toast from '../common/utils/toast';
+import {buildCoverUrl} from '../common/utils/cover';
 import {playOne, pushMusicToQueue, removeMusicFromQueue, changeMusicStatus} from '../actions/playerQueueActions'
 import 'styleAlias/player.scss';
 
@@ -52,10 +53,6 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
         return list.some((music) => music._id === musicId);
     }
 
-    getCover(cover: string) {
-        return `/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/full')}`;
-    }
-
     togglePlay() {
         if (!this.state.music || !this.state.music.filename) return;
 
@@ -100,7 +97,7 @@ export class SingleMusicPlayer extends React.Component<IProps, IState> {
             <div className="d-flex justify-content-center">
                 <div className="music-cont">
                     <div className="music-img">
-                        <img src={this.getCover(this.state.music.album.cover)} alt="" />
+                        <img src={buildCoverUrl(this.state.music.album.cover, 'full')} alt="" />
                     </div>
                     <div className="music-meta-creator">
                         <span>{this.state.music.creator.username || 'Unknown'}</span>

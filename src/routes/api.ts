@@ -4,9 +4,9 @@ import * as GenreCtrl from '../controllers/genreController';
 import * as AuthorCtrl from '../controllers/authorController';
 import * as AlbumCtrl from '../controllers/albumController';
 import * as UserCtrl from '../controllers/userController';
-import * as Playlist from '../controllers/playlistController';
-import { uploadConfig } from '../configs/upload';
-import { uploadCover } from '../common/FileUpload';
+import * as PlaylistCtrl from '../controllers/playlistController';
+import {uploadConfig} from '../configs/upload';
+import {uploadCover} from '../common/FileUpload';
 
 
 const api = express.Router();
@@ -19,8 +19,10 @@ api.get('/music/:id', MusicCtrl.getOne);
 api.post('/music/:id/edit', uploadConfig.audio.single('file'), MusicCtrl.edit);
 api.delete('/music/:id', MusicCtrl.deleteMusic);
 api.post('/music/search', MusicCtrl.search);
+api.post('/music/search_all', MusicCtrl.searchAll);
 api.post('/music/create', uploadConfig.audio.single('file'), MusicCtrl.createMusic);
 api.get('/music/genre/:id', MusicCtrl.getAllByGenre);
+api.get('/audio/:id', MusicCtrl.getAudio);
 
 
 //=======================================
@@ -53,24 +55,24 @@ api.get('/album/:id/music', AlbumCtrl.getMusic);
 //=======================================
 api.get('/profile/get_user', UserCtrl.getUser);
 api.get('/profile/music', MusicCtrl.getAllProfileMusic);
-api.get('/profile/playlists', Playlist.getAllProfilePlaylists);
+api.get('/profile/playlists', PlaylistCtrl.getAllProfilePlaylists);
 api.get('/profile/:id/music', MusicCtrl.getAllByUserId);
 
 
 //=======================================
 // Playlist
 //=======================================
-api.get('/playlist/:id', Playlist.getPlaylist);
-api.get('/playlist/:id/items', Playlist.getPlaylistItem);
-api.post('/playlist/:id/edit', Playlist.editPlaylist);
-api.post('/playlist/:id/delete', Playlist.deletePlaylist);
-api.post('/playlist/add', Playlist.createPlaylist);
+api.get('/playlists', PlaylistCtrl.getPlaylists);
+api.post('/playlist', PlaylistCtrl.createPlaylist);
+api.get('/playlist/:id', PlaylistCtrl.getPlaylist);
+api.get('/playlist/:id/items', PlaylistCtrl.getPlaylistItem);
+api.post('/playlist/:id/edit', PlaylistCtrl.editPlaylist);
+api.post('/playlist/:id/delete', PlaylistCtrl.deletePlaylist);
 
 
 //=======================================
 // Other
 //=======================================
-api.get('/logout', Playlist.getPlaylist);
 
 
 export default api;

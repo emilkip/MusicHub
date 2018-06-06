@@ -5,13 +5,12 @@ import {FileUpload, AddAuthor, AddAlbum, FormSelect} from "./";
 import {createMusic} from "../actions/musicActions";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
 import {IAuthor, IGenre, IAlbum} from "../common/interfaces";
-import {AuthorService, GenreService, MusicService} from "../services";
+import {AuthorService, GenreService} from "../services";
 import 'styleAlias/music-create.scss';
 
-import history from "../configs/history";
 
 interface IProps {
-    dispatch?(action: IReduxAction): void
+    dispatch?: (action: IReduxAction) => void
 }
 
 interface IState {
@@ -25,7 +24,7 @@ interface IState {
         author: string
         album: string
         genre: string
-        file: any
+        audio_file: any
     }
 }
 
@@ -45,7 +44,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
                 author: '',
                 album: '',
                 genre: '',
-                file: undefined
+                audio_file: undefined
             }
         };
 
@@ -110,23 +109,17 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
             toast.warn('Choose genre');
             return false;
         }
-        if (!this.state.newMusic.file) {
+        if (!this.state.newMusic.audio_file) {
             toast.warn('Choose audio file to upload');
             return false;
         }
         return true;
     }
 
-    async createTrack() {
+    createTrack() {
         if (!this.validate()) return;
 
-        try {
-            const createdTrack = await MusicService.create(this.state.newMusic);
-            this.props.dispatch(createMusic(createdTrack.data));
-            history.push('/');
-        } catch (err) {
-            toast.error(err.response.data.message || err.response.data);
-        }
+        this.props.dispatch(createMusic(this.state.newMusic));
     }
 
     toggleAuthorModal() {
@@ -162,66 +155,62 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
     render() {
         return (
             <div>
-                <div className="d-flex justify-content-center">
+                <div className="d-flex flex-column">
+                    <h3>Create music</h3>
                     <div className="music-create">
-                        <div className="col">
-                            <h2>New track</h2>
-                            <div className="col">
-                                <div className="form-group">
-                                    <input type="text" className="form-control" id="title" placeholder="Title"
-                                           onChange={this.handleChange}/>
+                        <div className="form-group">
+                            <input type="text" className="form-control" id="title" placeholder="Title"
+                                   onChange={this.handleChange}/>
+                        </div>
+                        <div className="row justify-content-between align-items-center">
+                            <div className="form-group col-md-7">
+                                <FormSelect options={this.state.authors}
+                                            valueField="_id"
+                                            labelField="title"
+                                            type="author"
+                                            onSelect={this.handleChange}/>
+                            </div>
+                            <div className="row col-md-5 justify-content-end">
+                                <div className="btn-black" onClick={this.toggleAuthorModal}>
+                                    <i className="fa fa-plus"/>Add author
                                 </div>
                             </div>
-                            <div className="row justify-content-between align-items-center">
-                                <div className="form-group col-md-7">
-                                    <FormSelect options={this.state.authors}
+                        </div>
+                        <div className="row justify-content-between align-items-center">
+                            <div className="col-md-7">
+                                <div className="form-group">
+                                    <FormSelect options={this.state.albums}
                                                 valueField="_id"
                                                 labelField="title"
-                                                type="author"
+                                                type="album"
                                                 onSelect={this.handleChange}/>
                                 </div>
-                                <div className="row col-md-5 justify-content-end">
-                                    <div className="btn-black" onClick={this.toggleAuthorModal}><i
-                                        className="fa fa-plus"/>Add author
-                                    </div>
+                            </div>
+                            <div className="row col-md-5 justify-content-end">
+                                <div className="btn-black" onClick={this.toggleAlbumModal}><i
+                                    className="fa fa-plus"/>Add album
                                 </div>
                             </div>
-                            <div className="row justify-content-between align-items-center">
-                                <div className="col-md-7">
-                                    <div className="form-group">
-                                        <FormSelect options={this.state.albums}
-                                                    valueField="_id"
-                                                    labelField="title"
-                                                    type="album"
-                                                    onSelect={this.handleChange}/>
-                                    </div>
-                                </div>
-                                <div className="row col-md-5 justify-content-end">
-                                    <div className="btn-black" onClick={this.toggleAlbumModal}><i
-                                        className="fa fa-plus"/>Add album
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-7">
-                                    <div className="form-group">
-                                        <FormSelect options={this.state.genres}
-                                                    valueField="_id"
-                                                    labelField="title"
-                                                    type="genre"
-                                                    onSelect={this.handleChange}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <FileUpload id="audio_file" onFileUpload={this.handleChange}
-                                                params={{accept: "audio/*"}}
-                                                label="Select track"/>
-                                </div>
-                            </div>
-                            <div className="btn-black" onClick={this.createTrack}>Create</div>
                         </div>
+                        <div className="row">
+                            <div className="col-md-7">
+                                <div className="form-group">
+                                    <FormSelect options={this.state.genres}
+                                                valueField="_id"
+                                                labelField="title"
+                                                type="genre"
+                                                onSelect={this.handleChange}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <FileUpload id="audio_file" onFileUpload={this.handleChange}
+                                            params={{accept: "audio/*"}}
+                                            label="Select track"/>
+                            </div>
+                        </div>
+                        <div className="btn-black" onClick={this.createTrack}>Create</div>
                     </div>
                 </div>
                 <AddAuthor isOpen={this.state.isAuthorModalOpen} onModalClose={this.toggleAuthorModal}

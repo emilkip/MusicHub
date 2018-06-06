@@ -34,8 +34,10 @@ export function createUser(req: Request, res: Response, next: NextFunction) {
 }
 
 
-export function logout(req: Request & { logout }, res: Response) {
-	return req.logout();
+export function logout(req: Request & { logout, session }, res: Response) {
+    return req.session.destroy(() => {
+        return res.status(200).json();
+    });
 }
 
 

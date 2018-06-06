@@ -16,7 +16,7 @@ interface IState extends IProps {
     newAlbum: {
         title: string
         author: string
-        file: any
+        cover_file: any
     }
 }
 
@@ -33,7 +33,7 @@ export class AddAlbum extends React.Component<IProps, IState> {
             newAlbum: {
                 title: '',
                 author: '',
-                file: undefined
+                cover_file: undefined
             }
         };
 

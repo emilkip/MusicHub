@@ -1,5 +1,4 @@
 import * as React from 'react';
-import 'styleAlias/common.scss';
 
 interface IProps {
     message: string

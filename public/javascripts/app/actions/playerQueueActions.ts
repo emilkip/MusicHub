@@ -29,6 +29,16 @@ export function removeMusicFromQueue(musicId: string): IReduxAction {
     }
 }
 
+export function playMany(musicList: IMusic[]): IReduxAction {
+    return {
+        type: 'PLAY_MANY',
+        payload: {
+            musicList
+        }
+    }
+}
+
+
 export function playOne(music: IMusic): IReduxAction {
     return {
         type: 'PLAY_ONE',
@@ -77,5 +87,6 @@ export default {
     pushMusicToQueue,
     playNext,
     playOne,
+    playMany,
     changeMusicStatus
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {MusicService} from '../services';
 import {connect} from "react-redux";
 import toast from '../common/utils/toast';
-import {getResults} from "../actions/searchAction";
+import {putResults} from "../actions/searchAction";
 import history from "../configs/history";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
 import 'styleAlias/music-list.scss';
@@ -14,7 +14,7 @@ interface IState {
 }
 
 interface IProps {
-    dispatch?(action: IReduxAction): void
+    dispatch?: (action: IReduxAction) => void
 }
 
 
@@ -33,9 +33,9 @@ export class Search extends React.Component<IProps, IState> {
 
     async search() {
         try {
-            const musicList = await MusicService.searchMusic(this.state.query);
+            const results = await MusicService.searchAll(this.state.query);
             this.setState({isRequested: true});
-            this.props.dispatch(getResults(musicList.data));
+            this.props.dispatch(putResults(results.data));
             history.push('/search_result');
         } catch (err) {
             toast.error(err.message || err);

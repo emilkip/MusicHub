@@ -1,0 +1,48 @@
+@import "mixins";
+
+.embedded-search-music {
+  position: relative;
+}
+
+.embedded-search-music-input {
+  border: 1px solid #eee;
+  height: 60px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+
+  input {
+    border: none;
+  }
+}
+
+.embedded-search-music-results {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  z-index: 30;
+  background-color: #fff;
+  width: 100%;
+  border: 1px solid #dedede;
+
+  .item {
+    padding: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .add {
+      @include circle-black-button(30px, 10px);
+    }
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+}
+

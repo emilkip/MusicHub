@@ -5,14 +5,16 @@ import * as cookieParser from 'cookie-parser';
 import * as flash from 'connect-flash';
 import * as bodyParser from 'body-parser';
 import * as eSession from 'express-session';
+import * as mongoStore from 'connect-mongo';
 import * as passport from './configs/passport';
 import * as policy from './policies';
-import './configs/mongo';
+import mongoConnection from './configs/mongo';
 
 import routes from './routes/index';
 import api from './routes/api';
 
 const app = Express();
+const MongoStore = mongoStore(eSession);
 
 
 // view engine setup
@@ -28,12 +30,16 @@ app.use(eSession({
 	secret: 'meow',
 	resave: false,
 	cookie: { maxAge: 604800000 },
-	saveUninitialized: false,
+	saveUninitialized: true,
+	store: new MongoStore({
+        mongooseConnection: mongoConnection.connection
+	})
 }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(Express.static(path.join(__dirname, '../public')));
+app.disable('x-powered-by');
 
 app.use('/libs', Express.static('node_modules'));
 

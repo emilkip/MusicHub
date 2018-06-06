@@ -2,6 +2,7 @@ import * as React from 'react';
 import {connect} from "react-redux";
 import {Progress, VolumeBar, QueueModal, PlayedMusicToast} from '../';
 import {IMusic} from "../../common/interfaces";
+import {buildCoverUrl} from '../../common/utils/cover';
 import toast from '../../common/utils/toast';
 import {changeMusicStatus, playNext, playPrev, toggleShuffle} from "../../actions/playerQueueActions";
 import 'styleAlias/player.scss';
@@ -95,8 +96,13 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
     }
 
     handleLoading(loadingStatus: any) {
+        const percentOfDuration: number = loadingStatus.duration / 100;
+        const range: any = loadingStatus.buffered.find((_range: any) => this.state.position > _range.start && this.state.position < _range.end);
+
+        if (!range) return;
+
         this.setState({
-            loaded: Math.floor(loadingStatus.bytesLoaded * 100)
+            loaded: range.end / percentOfDuration
         });
     }
 
@@ -153,10 +159,6 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
         })
     }
 
-    getCover(cover: string) {
-        return `/images/cover/${(!cover ? 'music-placeholder.png' : cover + '/thumbnail')}`;
-    }
-
     render() {
         return (
             <div className="global-player">
@@ -170,7 +172,7 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
                 </div>
                 <div className="global-player-info">
                     <div className="cover">
-                        <img src={this.getCover(this.state.music.album.cover)} alt=""/>
+                        <img src={buildCoverUrl(this.state.music.album.cover, 'thumbnail')} alt=""/>
                     </div>
                     <div className="info">
                         <div className="title">{this.state.music.author.title}</div>
@@ -188,7 +190,7 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
                     <VolumeBar volume={this.state.volume} setVolume={this.setVolume}/>
                 </div>
                 <div className="global-player-queue-btn">
-                    <div className={`global-player-queue ${this.state.queueOpened ? 'active' : ''}`}
+                    <div className={`btn-white ${this.state.queueOpened ? 'active' : ''}`}
                          onClick={this.toggleQueueModal}>
                         <span className="fa fa-chevron-up"/>
                         <span>Playback queue</span>
@@ -197,7 +199,7 @@ export class GlobalPlayer extends React.Component<IProps, IState> {
 
                 <QueueModal opened={this.state.queueOpened}/>
 
-                <Sound url={`/audio/${this.state.url}`}
+                <Sound url={`/api/audio/${this.state.url}`}
                        volume={this.state.volume}
                        onPlaying={this.handlePlaying}
                        onFinishedPlaying={this.handleFinish}

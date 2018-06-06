@@ -5,21 +5,21 @@ import ModalStyle from '../common/styles/AddModalStyle'
 import {AuthorService} from "../services";
 
 
-interface IAddAuthorProps {
+interface IProps {
     isOpen: boolean
     onModalClose?: () => void
     onAuthorCreate?: (author: any) => void
 }
 
-interface IAddAuthorState extends IAddAuthorProps {
+interface IState extends IProps {
     authorName: string
 }
 
 Modal.setAppElement('#app');
 
 
-export class AddAuthor extends React.Component<IAddAuthorProps, IAddAuthorState> {
-    constructor(props: IAddAuthorProps) {
+export class AddAuthor extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             isOpen: props.isOpen,
@@ -32,7 +32,7 @@ export class AddAuthor extends React.Component<IAddAuthorProps, IAddAuthorState>
         this.validate = this.validate.bind(this);
     }
 
-    componentWillReceiveProps(props: IAddAuthorProps) {
+    componentWillReceiveProps(props: IProps) {
         this.setState({
             isOpen: props.isOpen
         });

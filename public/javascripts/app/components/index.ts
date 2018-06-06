@@ -1,8 +1,7 @@
-import {GlobalPlayer} from "./player/GlobalPlayer";
-
 export {AddAlbum} from './AddAlbum';
 export {AddAuthor} from './AddAuthor';
 export {AlbumList} from './AlbumList';
+export {Playlists} from './Playlists';
 export {AuthorList} from './AuthorList';
 export {FileUpload} from './FileUpload';
 export {FormSelect} from './FormSelect';
@@ -10,6 +9,7 @@ export {Header} from './Header';
 export {MusicForm} from './MusicForm';
 export {MusicList} from './MusicList';
 export {MusicListItem} from './MusicListItem';
+export {MusicGridItem} from './MusicGridItem';
 export {Routing} from './Routing';
 export {Search} from './Search';
 export {EmptyListMsg} from './EmptyListMsg';

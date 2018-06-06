@@ -1,9 +1,8 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const extractTextPlugin = require('extract-text-webpack-plugin');
 
 
 module.exports = {
-    mode: 'development',
     entry: './public/javascripts/app/main.tsx',
 
     resolve: {
@@ -14,7 +13,7 @@ module.exports = {
     },
 
     output: {
-        path: path.resolve(__dirname, 'public/dist_client/javascripts'),
+        path: path.resolve(__dirname, 'public/dist_client'),
         filename: 'client.js'
     },
 
@@ -38,7 +37,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                // use: ExtractTextPlugin.extract({
+                // use: extractTextPlugin.extract({
                 //     fallback: "style-loader",
                     use: [
                         {
@@ -67,7 +66,19 @@ module.exports = {
         ]
     },
 
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
+
     plugins: [
-        // new ExtractTextPlugin('../stylesheets/style.css')
+        // new extractTextPlugin('style.css')
     ]
 };

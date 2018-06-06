@@ -6,10 +6,7 @@ import '../screens/LayoutScreen/style.scss';
 
 export const Header = (props: any) => {
 
-    const logout = () => {
-        Axios.get('/logout')
-            .then(() => { window.location.href = '/login' });
-    };
+    const logout = () => Axios.get('/logout').then(() => { window.location.href = '/login' });
 
     return (
         <header className="main-header">
