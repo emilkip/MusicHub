@@ -73,7 +73,7 @@ export class AddAlbum extends React.Component<IProps, IState> {
             await AlbumService.createAlbum(this.state.newAlbum);
             this.closeModal();
         } catch(err) {
-            toast.error(err.response.data.message || err.response.data);
+            toast.error(err.message || err);
         }
     }
 

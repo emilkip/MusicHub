@@ -11,7 +11,8 @@ import {
     MusicCreateScreen,
     ProfileScreen,
     MusicScreen,
-    HomeScreen
+    HomeScreen,
+    FavoriteMusicScreen
 } from '../screens';
 
 import history from '../configs/history';
@@ -32,6 +33,7 @@ export class Routing extends React.Component {
                     <Route path="/album/:id" component={AlbumScreen} />
                     <Route path="/author/:id" component={AuthorScreen} />
                     <Route path="/playlists" exact component={PlaylistsScreen} />
+                    <Route path="/favorite" exact component={FavoriteMusicScreen} />
                     <Route path="/playlist/:id" exact component={PlaylistDetailScreen} />
                     <Route path="/create_playlist" component={PlaylistCreateScreen} />
                     {/*<Route path="/playlist/:id/edit" component={PlaylistScreen} />*/}

@@ -27,9 +27,3 @@ export function clearResults(): IReduxAction {
         payload: {}
     }
 }
-
-
-export default {
-    putResults,
-    clearResults
-}

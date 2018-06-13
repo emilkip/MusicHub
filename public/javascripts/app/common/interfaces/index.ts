@@ -1,5 +1,6 @@
 
 export {IMusic} from './IMusic';
+export {INewMusic} from './IMusic';
 export {IAlbum} from './IAlbum';
 export {IAuthor} from './IAuthor';
 export {IPlaylist} from './IPlaylist';

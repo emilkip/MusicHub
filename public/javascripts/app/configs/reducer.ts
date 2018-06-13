@@ -5,7 +5,8 @@ import {
     musicReducer,
     searchResultReducer,
     playerQueueReducer,
-    profileReducer
+    profileReducer,
+    playlistReducer
 } from '../reducers';
 
 
@@ -15,7 +16,8 @@ const appReducers = combineReducers({
     musicReducer,
     searchResultReducer,
     playerQueueReducer,
-    profileReducer
+    profileReducer,
+    playlistReducer
 });
 
 export default appReducers;

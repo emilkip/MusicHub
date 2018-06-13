@@ -1,8 +1,15 @@
 import * as React from 'react';
 import {AlbumList, EmptyListMsg} from "../../components";
-import {AuthorService} from "../../services";
 import {IAlbum, IAuthor} from "../../common/interfaces";
 import 'styleAlias/music-list.scss';
+import {connect} from "react-redux";
+import {fetchAuthor} from "../../thunkActions/authorActions";
+import {clearCurrentAuthor} from "../../actions/authorActions";
+
+interface IProps {
+    fetchAuthor?: (id: string) => void
+    clearCurrentAuthor?: () => void
+}
 
 interface IState {
     author: IAuthor
@@ -10,7 +17,15 @@ interface IState {
     authorId: string
 }
 
-export class AuthorScreen extends React.Component<any, IState> {
+
+@(connect((state: any) => ({
+    author: state.authorReducer.currentAuthor.author,
+    albums: state.authorReducer.currentAuthor.albums
+}), (dispatch: any) => ({
+    fetchAuthor: (id: string) => dispatch(fetchAuthor(id)),
+    clearCurrentAuthor: () => dispatch(clearCurrentAuthor())
+})) as any)
+export class AuthorScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 
@@ -20,25 +35,22 @@ export class AuthorScreen extends React.Component<any, IState> {
             authorId: props.match.params.id
         };
 
-        this.fetchAuthorAlbums = this.fetchAuthorAlbums.bind(this);
         this.renderList = this.renderList.bind(this);
-        this.fetchAuthorAlbums();
     }
 
-    async fetchAuthorAlbums() {
-        try {
-            const authorData: any = await AuthorService.getAlbumsForAuthor(this.state.authorId);
+    componentDidMount() {
+        this.props.fetchAuthor(this.state.authorId);
+    }
 
-            this.setState({
-                author: authorData.data.author || {},
-                albums: authorData.data.albums.map((album: any) => {
-                    album.author = authorData.data.author;
-                    return album;
-                })
-            });
-        } catch (err) {
-            console.log(err);
-        }
+    componentWillUnmount() {
+        // this.props.clearCurrentAuthor();
+    }
+
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        return {
+            author: nextProps.author,
+            albums: nextProps.albums
+        };
     }
 
     renderList() {

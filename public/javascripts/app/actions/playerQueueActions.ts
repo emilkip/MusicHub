@@ -80,13 +80,3 @@ export function changeMusicStatus(music: IMusic, playing: boolean): IReduxAction
         }
     }
 }
-
-
-export default {
-    getQueue,
-    pushMusicToQueue,
-    playNext,
-    playOne,
-    playMany,
-    changeMusicStatus
-}

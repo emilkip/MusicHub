@@ -64,6 +64,8 @@ api.get('/profile/:id/music', MusicCtrl.getAllByUserId);
 //=======================================
 api.get('/playlists', PlaylistCtrl.getPlaylists);
 api.post('/playlist', PlaylistCtrl.createPlaylist);
+api.get('/playlist/favorite', PlaylistCtrl.getFavoriteMusic);
+api.post('/playlist/favorite/add', PlaylistCtrl.addToFavorite);
 api.get('/playlist/:id', PlaylistCtrl.getPlaylist);
 api.get('/playlist/:id/items', PlaylistCtrl.getPlaylistItem);
 api.post('/playlist/:id/edit', PlaylistCtrl.editPlaylist);

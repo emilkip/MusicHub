@@ -13,3 +13,11 @@ export interface IMusic {
     filename?: string
     creator?: IUser
 }
+
+export interface INewMusic {
+    title: string
+    author: string
+    album: string
+    genre: string
+    audio_file: any
+}

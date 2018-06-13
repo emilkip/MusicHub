@@ -1,13 +1,16 @@
 import * as React from 'react';
 import {IAlbum, IMusic} from "../../common/interfaces";
 import {buildCoverUrl} from '../../common/utils/cover';
-import {AlbumService} from "../../services";
 import {connect} from "react-redux";
-import 'styleAlias/album.scss';
 import {EmptyListMsg, MusicList} from "../../components";
+import {clearCurrentAlbum} from "../../actions/albumActions";
+import {fetchAlbum} from "../../thunkActions/albumActions";
+import 'styleAlias/album.scss';
 
 interface IProps {
     match: any
+    fetchAlbum?: (id: string) => void
+    clearCurrentAlbum?: () => void
 }
 
 interface IState {
@@ -16,6 +19,14 @@ interface IState {
     albumId: string
 }
 
+
+@(connect((state: any) => ({
+    album: state.albumReducer.currentAlbum.album,
+    musicList: state.albumReducer.currentAlbum.musicList
+}), (dispatch: any) => ({
+    fetchAlbum: (id: string) => dispatch(fetchAlbum(id)),
+    clearCurrentAlbum: () => dispatch(clearCurrentAlbum())
+})) as any)
 export class AlbumScreen extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
@@ -26,18 +37,21 @@ export class AlbumScreen extends React.Component<IProps, IState> {
             musicList: [],
             albumId: props.match.params.id,
         };
-
-        this.fetchMusicForAlbum = this.fetchMusicForAlbum.bind(this);
-        this.fetchMusicForAlbum();
     }
 
-    async fetchMusicForAlbum() {
-        const musicData: any = await AlbumService.getMusicForAlbum(this.state.albumId);
+    componentDidMount() {
+        this.props.fetchAlbum(this.state.albumId);
+    }
 
-        this.setState({
-            album: musicData.data.album,
-            musicList: musicData.data.musicList
-        });
+    componentWillUnmount() {
+        this.props.clearCurrentAlbum();
+    }
+
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        return {
+            album: nextProps.album.author ? nextProps.album : prevState.album,
+            musicList: nextProps.musicList || []
+        };
     }
 
     render() {
@@ -58,7 +72,7 @@ export class AlbumScreen extends React.Component<IProps, IState> {
                         {
                             this.state.musicList.length
                                 ? <MusicList type="list" musicList={this.state.musicList}/>
-                                : <EmptyListMsg message="No music"/>
+                                : <EmptyListMsg render={true} message="No music"/>
                         }
                     </div>
                 </div>

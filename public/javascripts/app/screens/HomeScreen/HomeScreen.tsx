@@ -4,12 +4,14 @@ import {MusicList, Search} from '../../components';
 import {IMusic} from "../../common/interfaces";
 import {IReduxAction} from "../../common/interfaces/CommonInterfaces";
 import 'styleAlias/music-list.scss';
+import {fetchMusicList} from "../../thunkActions/musicActions";
 
 
 
 interface IProps {
     musicList: IMusic[]
     dispatch?: (action: IReduxAction) => void
+    fetchMusicList?: () => void
 }
 
 interface IState {
@@ -18,6 +20,8 @@ interface IState {
 
 @(connect((state: any) => ({
     musicList: state.musicReducer.musicList
+}), (dispatch: any) => ({
+    fetchMusicList: () => dispatch(fetchMusicList())
 })) as any)
 export class HomeScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
@@ -25,9 +29,11 @@ export class HomeScreen extends React.Component<IProps, IState> {
         this.state = {
             musicList: props.musicList || []
         };
+    }
 
-        if (!props.musicList.length) {
-            this.props.dispatch({ type: 'REQUEST_MUSIC_LIST' });
+    componentDidMount() {
+        if (!this.state.musicList.length) {
+            this.props.fetchMusicList();
         }
     }
 

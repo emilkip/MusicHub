@@ -4,11 +4,14 @@ import {SingleMusicPlayer} from '../../components/SingleMusicPlayer';
 import {IMusic} from "../../common/interfaces";
 import {IReduxAction} from "../../common/interfaces/CommonInterfaces";
 import {connect} from "react-redux";
-import {requestMusicById, resetCurrentMusic} from "../../actions/musicActions";
+import {resetCurrentMusic} from "../../actions/musicActions";
+import {fetchMusic} from "../../thunkActions/musicActions";
 
 
 interface IProps {
     dispatch?: (action: IReduxAction) => void
+    fetchMusic?: (id: string) => void
+    resetCurrentMusic?: () => void
 }
 
 interface IState {
@@ -18,6 +21,9 @@ interface IState {
 
 @(connect((state: any) => ({
     music: state.musicReducer.currentMusic
+}), (dispatch: any) => ({
+    resetCurrentMusic: () => dispatch(resetCurrentMusic()),
+    fetchMusic: (id: string) => dispatch(fetchMusic(id))
 })) as any)
 export class MusicScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
@@ -26,14 +32,10 @@ export class MusicScreen extends React.Component<IProps, IState> {
             music: {} as any,
             musicId: props.match.params.id
         };
-
-        this.props.dispatch(requestMusicById(this.state.musicId));
     }
 
-    static getDerivedStateFromProps(nextProps: any, prevState: any) {
-        return {
-            music: nextProps.music
-        };
+    componentDidMount() {
+        this.props.fetchMusic(this.state.musicId);
     }
 
     componentDidCatch(error: Error) {
@@ -41,7 +43,13 @@ export class MusicScreen extends React.Component<IProps, IState> {
     }
 
     componentWillUnmount() {
-        this.props.dispatch(resetCurrentMusic());
+        this.props.resetCurrentMusic();
+    }
+
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        return {
+            music: nextProps.music
+        };
     }
 
     render() {

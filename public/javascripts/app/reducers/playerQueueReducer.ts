@@ -1,5 +1,6 @@
 import { IReduxAction } from "../common/interfaces/CommonInterfaces";
 import {IMusic} from "../common/interfaces";
+import {handleActions} from "redux-actions";
 
 function shuffleMusicList(list: IMusic[] = [], currentMusic: IMusic): IMusic[] {
     if (currentMusic._id) {
@@ -34,113 +35,105 @@ const defaultState: IDefaultState = {
 };
 
 
-export function playerQueueReducer(state: IDefaultState = defaultState, action: IReduxAction): IDefaultState {
+export const playerQueueReducer = handleActions({
+    GET_QUEUE(state, action: IReduxAction) {
+        return {
+            ...state,
+            musicList: state.musicList
+        };
+    },
+    PUSH_MUSIC_TO_QUEUE(state, action: IReduxAction) {
+        const musicInList: any = state.musicList.find((music: IMusic) => music._id === action.payload.music._id);
 
-    const actions: any = {
-        GET_QUEUE(): IDefaultState {
-            return {
-                ...state,
-                musicList: state.musicList
-            };
-        },
-        PUSH_MUSIC_TO_QUEUE(): IDefaultState {
-            const musicInList: any = state.musicList.find((music) => music._id === action.payload.music._id);
+        if (musicInList) return state;
 
-            if (musicInList) return state;
+        return {
+            ...state,
+            baseMusicList: [...state.baseMusicList, action.payload.music],
+            musicList: [...state.musicList, action.payload.music]
+        };
+    },
+    REMOVE_MUSIC_FROM_QUEUE(state, action: IReduxAction) {
+        const filteredMusicList: IMusic[] = state.musicList.filter((music: IMusic) => music._id !== action.payload.musicId);
 
-            return {
-                ...state,
-                baseMusicList: [...state.baseMusicList, action.payload.music],
-                musicList: [...state.musicList, action.payload.music]
-            };
-        },
-        REMOVE_MUSIC_FROM_QUEUE(): IDefaultState {
-            const filteredMusicList: IMusic[] = state.musicList.filter((music) => music._id !== action.payload.musicId);
-
-            return {
-                ...state,
-                baseMusicList: [...filteredMusicList],
-                musicList: [...filteredMusicList]
-            };
-        },
-        PLAY_MANY(): IDefaultState {
-            return {
-                ...state,
-                musicList: action.payload.musicList,
-                baseMusicList: action.payload.musicList,
-                playedMusic: {
-                    music: action.payload.musicList[0],
-                    playing: true
-                }
-            };
-        },
-        PLAY_ONE(): IDefaultState {
-            const musicInList: any = state.musicList.find((music) => music._id === action.payload.music._id);
-
-            if (musicInList) return state;
-
-            return {
-                ...state,
-                musicList: [action.payload.music],
-                baseMusicList: [action.payload.music]
-            };
-        },
-        PLAY_NEXT(): IDefaultState {
-            if (!state.musicList.length) return state;
-
-            const currentMusicIndex: number = state.musicList.findIndex((music) => music._id === state.playedMusic.music._id);
-            const nextMusicIndex: number = currentMusicIndex + 1;
-
-            return {
-                ...state,
-                playedMusic: {
-                    music: nextMusicIndex === state.musicList.length ? state.musicList[0] : state.musicList[(nextMusicIndex) % state.musicList.length],
-                    playing: true
-                }
-            };
-        },
-        PLAY_PREV(): IDefaultState {
-            if (!state.musicList.length) return state;
-            const currentMusicIndex: number = state.musicList.findIndex((music) => music._id === state.playedMusic.music._id);
-            const prevMusicIndex: number = currentMusicIndex - 1;
-            return {
-                ...state,
-                playedMusic: {
-                    music: prevMusicIndex < 0 ? state.musicList[0] : state.musicList[prevMusicIndex],
-                    playing: true
-                }
-            };
-        },
-        TOGGLE_SHUFFLE_QUEUE(): IDefaultState {
-            let musicList: IMusic[] = [];
-
-            if (action.payload.shuffle) {
-                debugger
-                musicList = shuffleMusicList([...state.baseMusicList], state.playedMusic.music);
-            } else {
-                musicList = state.baseMusicList;
+        return {
+            ...state,
+            baseMusicList: [...filteredMusicList],
+            musicList: [...filteredMusicList]
+        };
+    },
+    PLAY_MANY(state, action: IReduxAction) {
+        return {
+            ...state,
+            musicList: action.payload.musicList,
+            baseMusicList: action.payload.musicList,
+            playedMusic: {
+                music: action.payload.musicList[0],
+                playing: true
             }
+        };
+    },
+    PLAY_ONE(state, action: IReduxAction) {
+        const musicInList: any = state.musicList.find((music: IMusic) => music._id === action.payload.music._id);
 
-            return {
-                ...state,
-                musicList
+        if (musicInList) return state;
+
+        return {
+            ...state,
+            musicList: [action.payload.music],
+            baseMusicList: [action.payload.music]
+        };
+    },
+    PLAY_NEXT(state, action: IReduxAction) {
+        if (!state.musicList.length) return state;
+
+        const currentMusicIndex: number = state.musicList.findIndex((music: IMusic) => music._id === state.playedMusic.music._id);
+        const nextMusicIndex: number = currentMusicIndex + 1;
+
+        return {
+            ...state,
+            playedMusic: {
+                music: nextMusicIndex === state.musicList.length ? state.musicList[0] : state.musicList[(nextMusicIndex) % state.musicList.length],
+                playing: true
             }
-        },
-        CHANGE_MUSIC_STATUS(): IDefaultState {
-            return {
-                ...state,
-                playedMusic: {
-                    music: action.payload.music,
-                    playing: action.payload.playing
-                }
-            };
-        },
-        FETCH_QUEUE_STATUS(): IDefaultState {
-            return state;
+        };
+    },
+    PLAY_PREV(state, action: IReduxAction) {
+        if (!state.musicList.length) return state;
+        const currentMusicIndex: number = state.musicList.findIndex((music: IMusic) => music._id === state.playedMusic.music._id);
+        const prevMusicIndex: number = currentMusicIndex - 1;
+        return {
+            ...state,
+            playedMusic: {
+                music: prevMusicIndex < 0 ? state.musicList[0] : state.musicList[prevMusicIndex],
+                playing: true
+            }
+        };
+    },
+    TOGGLE_SHUFFLE_QUEUE(state, action: IReduxAction) {
+        let musicList: IMusic[] = [];
+
+        if (action.payload.shuffle) {
+            musicList = shuffleMusicList([...state.baseMusicList], state.playedMusic.music);
+        } else {
+            musicList = state.baseMusicList;
         }
-    };
 
-    if (!(action.type in actions)) return state;
-
-    return actions[action.type]();
-}
+        return {
+            ...state,
+            musicList
+        }
+    },
+    CHANGE_MUSIC_STATUS(state, action: IReduxAction) {
+        return {
+            ...state,
+            playedMusic: {
+                music: action.payload.music,
+                playing: action.payload.playing
+            }
+        };
+    },
+    FETCH_QUEUE_STATUS(state, action: IReduxAction): IDefaultState {
+        return state;
+    }
+}, defaultState);

@@ -7,10 +7,14 @@ import history from '../../configs/history';
 import 'styleAlias/playlist.scss';
 import {playMany} from "../../actions/playerQueueActions";
 import {connect} from "react-redux";
+import {fetchPlaylistDetails} from "../../thunkActions/playlistActions";
+import {clearCurrentPlaylist} from "../../actions/playlistActions";
 
 
 interface IProps {
     dispatch?: (action: any) => void
+    fetchPlaylist?: (id: string) => void
+    clearCurrentPlaylist?: () => void
 }
 
 interface IState {
@@ -19,7 +23,13 @@ interface IState {
     musicList: IMusic[]
 }
 
-@(connect() as any)
+@(connect((state: any) => ({
+    playlistInfo: state.playlistReducer.currentPlaylist.playlistInfo,
+    musicList: state.playlistReducer.currentPlaylist.musicList
+}), (dispatch: any) => ({
+    fetchPlaylist: (id: string) => dispatch(fetchPlaylistDetails(id)),
+    clearCurrentPlaylist: () => dispatch(clearCurrentPlaylist())
+})) as any)
 export class PlaylistDetailScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
@@ -31,30 +41,22 @@ export class PlaylistDetailScreen extends React.Component<IProps, IState> {
         };
 
         this.renderMusicList = this.renderMusicList.bind(this);
-        this.fetchPlaylist = this.fetchPlaylist.bind(this);
         this.play = this.play.bind(this);
-
-        this.fetchPlaylist();
     }
 
-    // static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    //     return {
-    //         playlistInfo: playlist.data.playlist,
-    //         musicList: playlist.data.musicList || []
-    //     };
-    // }
+    componentDidMount() {
+        this.props.fetchPlaylist(this.state.playlistId);
+    }
 
-    async fetchPlaylist() {
-        try {
-            const playlist: any = await PlaylistService.getPlaylist(this.state.playlistId);
+    componentWillUnmount() {
+        this.props.clearCurrentPlaylist();
+    }
 
-            this.setState({
-                playlistInfo: playlist.data.playlist,
-                musicList: playlist.data.musicList || []
-            });
-        } catch (err) {
-            toast.error(err.response.data.message || err.response.data);
-        }
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        return {
+            playlistInfo: nextProps.playlistInfo,
+            musicList: nextProps.musicList || []
+        };
     }
 
     play() {

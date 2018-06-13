@@ -58,7 +58,7 @@ export class AddAuthor extends React.Component<IProps, IState> {
             this.props.onAuthorCreate(newAuthor.data);
             this.closeModal();
         } catch(err) {
-            toast.error(err.response.data.message || err.response.data);
+            toast.error(err.message || err);
         }
     }
 

@@ -1,4 +1,5 @@
 import { IReduxAction } from "../common/interfaces/CommonInterfaces";
+import {IAuthor} from "../common/interfaces";
 
 
 export function getAuthors(): IReduxAction {
@@ -18,18 +19,18 @@ export function pushAuthors(authors: any[]): IReduxAction {
     }
 }
 
-
-export function createAuthor(author: any): IReduxAction {
+export function setCurrentAuthor(authorData: IAuthor): IReduxAction {
     return {
-        type: 'CREATE_AUTHOR',
+        type: 'SET_CURRENT_AUTHOR',
         payload: {
-            author
+            authorData
         }
     }
 }
 
-
-export default {
-    getAuthors,
-    createAuthor
+export function clearCurrentAuthor(): IReduxAction {
+    return {
+        type: 'CLEAR_CURRENT_AUTHOR',
+        payload: {}
+    }
 }

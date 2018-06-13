@@ -4,9 +4,10 @@ import {IPlaylist, Playlist} from "../models/Playlist";
 import { PlaylistItem } from "../models/PlaylistItem";
 import {Album} from "../models/Album";
 import {Author} from "../models/Author";
+import {DocumentQuery} from "mongoose";
 
 
-export async function getPlaylists(req: Request, res: Response) {
+export function getPlaylists(req: Request, res: Response) {
 	return Playlist
 		.find({ type: 'public' })
 		.populate('owner')
@@ -156,6 +157,42 @@ export function createPlaylist(req: Request & { user }, res: Response) {
 			console.log(err);
             return res.status(500).json(err);
 		});
+}
+
+
+export async function addToFavorite(req: Request & { user }, res: Response) {
+    try {
+        const playlist: Playlist = await Playlist.findOne({ type: 'favorite', owner: req.user.id });
+
+        if (!playlist) return Bluebird.reject('Playlist not found');
+
+        const newFavoriteMusic = new PlaylistItem({
+			playlist: playlist._id,
+			music: req.body.musicId
+		});
+
+        await newFavoriteMusic.save();
+
+        return res.status(200).json();
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+}
+
+
+export async function getFavoriteMusic(req: Request & { user }, res: Response) {
+	try {
+        const playlist: Playlist = await Playlist.findOne({ type: 'favorite', owner: req.user.id });
+
+        if (!playlist) return Bluebird.reject('Playlist not found');
+
+        const musicList: PlaylistItem[] = await PlaylistItem.find({ playlist: playlist._id });
+        return res.status(200).json(musicList);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json(err);
+    }
 }
 
 

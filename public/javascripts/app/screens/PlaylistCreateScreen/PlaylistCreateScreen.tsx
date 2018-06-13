@@ -68,7 +68,7 @@ export class PlaylistCreateScreen extends React.Component<any, IState> {
                 history.push('/playlists');
             })
             .catch((err) => {
-                toast.error(err.response.data.message || err.response.data);
+                toast.error(err.message || err);
             });
     }
 

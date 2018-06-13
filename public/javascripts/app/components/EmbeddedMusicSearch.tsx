@@ -53,7 +53,7 @@ export class EmbeddedMusicSearch extends React.Component<IProps, IState> {
                 });
             })
             .catch((err) => {
-                toast.error(err.response.data.message || err.response.data);
+                toast.error(err.message || err);
             });
     }
 

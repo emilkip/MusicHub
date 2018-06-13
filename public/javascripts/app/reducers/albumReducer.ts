@@ -1,37 +1,50 @@
 import { IReduxAction } from "../common/interfaces/CommonInterfaces";
+import {handleActions} from 'redux-actions';
+import {IAlbum, IMusic} from "../common/interfaces";
 
 interface IDefaultState {
-    albums: any[]
+    currentAlbums: IAlbum[]
+    currentAlbum: {
+        album: IAlbum
+        musicList: IMusic[]
+    }
 }
 
 const defaultState: IDefaultState = {
-    albums: []
+    currentAlbums: [],
+    currentAlbum: {
+        album: {} as any,
+        musicList: []
+    }
 };
 
-export function albumReducer(state: IDefaultState = defaultState, action: IReduxAction): IDefaultState {
 
-    const actions: any = {
-        CREATE_ALBUM(): IDefaultState {
-            return {
-                ...state,
-                albums: [...state.albums, action.payload.album]
-            };
-        },
-        GET_ALBUMS(): IDefaultState {
-            return {
-                ...state,
-                albums: [...state.albums, ...action.payload.albums]
-            };
-        },
-        GET_ALBUMS_BY_AUTHOR(): IDefaultState {
-            return {
-                ...state,
-                albums: [...state.albums, ...action.payload.albums]
-            };
+export const albumReducer = handleActions({
+    PUSH_ALBUMS(state, {payload}: IReduxAction) {
+        return {
+            ...state,
+            currentAlbums: payload.albums
         }
-    };
-
-    if (!(action.type in actions)) return state;
-
-    return actions[action.type]();
-}
+    },
+    CLEAR_ALBUMS() {
+        return defaultState;
+    },
+    SET_CURRENT_ALBUM(state, {payload}: IReduxAction) {
+        return {
+            ...state,
+            currentAlbum: {
+                album: payload.albumData.album,
+                musicList: payload.albumData.musicList
+            }
+        };
+    },
+    CLEAR_CURRENT_ALBUM(state, {payload}: IReduxAction) {
+        return {
+            ...state,
+            currentAlbum: {
+                album: {} as any,
+                musicList: []
+            }
+        };
+    }
+}, defaultState);

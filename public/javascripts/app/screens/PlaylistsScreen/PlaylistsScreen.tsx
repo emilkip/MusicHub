@@ -1,21 +1,27 @@
 import * as React from 'react';
-import {IPlaylist} from "../../common/interfaces";
-import toast from "../../common/utils/toast";
-import {PlaylistService} from "../../services";
+import {INewMusic, IPlaylist} from "../../common/interfaces";
 import {Playlists} from "../../components";
 import history from '../../configs/history';
 import 'styleAlias/common.scss';
 import 'styleAlias/playlist.scss';
+import {connect} from "react-redux";
+import {fetchRecentPlaylists} from "../../thunkActions/playlistActions";
 
 
 interface IProps {
     dispatch?: (action: any) => void
+    fetchRecentPlaylists?: () => void
 }
 
 interface IState {
     playlists: IPlaylist[]
 }
 
+@(connect((state: any) => ({
+    playlists: state.playlistReducer.playlists,
+}), (dispatch: any) => ({
+    fetchRecentPlaylists: () => dispatch(fetchRecentPlaylists())
+})) as any)
 export class PlaylistsScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
@@ -23,10 +29,10 @@ export class PlaylistsScreen extends React.Component<IProps, IState> {
         this.state = {
             playlists: []
         };
+    }
 
-        this.fetchPlaylists = this.fetchPlaylists.bind(this);
-
-        this.fetchPlaylists();
+    componentDidMount() {
+        this.props.fetchRecentPlaylists();
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
@@ -35,24 +41,12 @@ export class PlaylistsScreen extends React.Component<IProps, IState> {
         };
     }
 
-    async fetchPlaylists() {
-        try {
-            const playlists: any = await PlaylistService.getPlaylists();
-
-            this.setState({
-                playlists: playlists.data || []
-            });
-        } catch (err) {
-            toast.error(err.response.data.message || err.response.data);
-        }
-    }
-
     render() {
         return (
             <div className="playlists">
                 <div className="playlist-header">
                     <div>
-                        <h3>Play lists</h3>
+                        <h3>Playlists</h3>
                         <p>Recently created playlists</p>
                     </div>
                     <div className="btn-black" onClick={() => history.push('/create_playlist')}>

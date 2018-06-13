@@ -1,17 +1,9 @@
 import { createStore, applyMiddleware } from 'redux'
-import createSagaMiddleware from 'redux-saga'
-import rootSaga from '../sagas/musicSaga'
+import thunkMiddleware from 'redux-thunk'
 import reducer from './reducer'
 
 
-const sagaMiddleware = createSagaMiddleware();
-
-
-const appStore: any = createStore(
+export default createStore(
     reducer,
-    applyMiddleware(sagaMiddleware)
+    applyMiddleware(thunkMiddleware)
 );
-
-sagaMiddleware.run(rootSaga);
-
-export default appStore;

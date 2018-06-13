@@ -37,17 +37,14 @@ export class Progress extends React.Component<IProps, IState> {
             position: 0,
             loaded: 0,
             duration: 0,
-            status: 'PAUSED',
+            status: 'STOPPED',
             elapsedTime: '00:00',
             totalTime: '00:00'
         };
 
         this.setTimer = this.setTimer.bind(this);
+        this.clearTimer = this.clearTimer.bind(this);
         this.handleProgressBarClick = this.handleProgressBarClick.bind(this);
-    }
-
-    componentDidMount() {
-        this.setTimer();
     }
 
     handleProgressBarClick(event: any) {
@@ -75,6 +72,23 @@ export class Progress extends React.Component<IProps, IState> {
         this.setState({
             timer
         });
+    }
+
+    clearTimer() {
+        clearInterval(this.state.timer);
+
+        this.setState({
+            timer: null
+        });
+    }
+
+    componentDidUpdate(prevProps: any, prevState: any) {
+        if (this.state.status === 'PLAYING' && prevState.status !== 'PLAYING') {
+            this.setTimer();
+        }
+        if ((this.state.status === 'PAUSED' && prevState.status === 'PLAYING') || this.state.status === 'STOPPED') {
+            this.clearTimer();
+        }
     }
 
     shouldComponentUpdate(nextProps: any, nextState: any) {

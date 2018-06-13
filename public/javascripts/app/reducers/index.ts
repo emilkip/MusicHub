@@ -5,3 +5,4 @@ export {musicReducer} from './musicReducer';
 export {profileReducer} from './profileReducer';
 export {playerQueueReducer} from './playerQueueReducer';
 export {searchResultReducer} from './searchResultReducer';
+export {playlistReducer} from './playlistReducer';

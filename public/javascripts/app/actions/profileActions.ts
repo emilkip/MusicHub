@@ -17,9 +17,3 @@ export function getUser(): IReduxAction {
         payload: {}
     }
 }
-
-
-export default {
-    setUser,
-    getUser
-}

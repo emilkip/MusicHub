@@ -31,10 +31,15 @@ export function getByID(id: string) {
     return Axios.get(`/api/music/${id}`);
 }
 
+export function getGenres() {
+    return Axios.get(`/api/genres`);
+}
+
 
 export default {
     getByID,
     getAll,
+    getGenres,
     create,
     searchMusic,
     searchAll

@@ -1,27 +1,35 @@
 import { IReduxAction } from "../common/interfaces/CommonInterfaces";
+import {IAlbum, IAuthor} from "../common/interfaces";
 
 
-export function getAlbums(albums: any[]): IReduxAction {
+export function pushAlbums(albums: IAlbum[]): IReduxAction {
     return {
-        type: 'GET_ALBUMS',
+        type: 'PUSH_ALBUMS',
         payload: {
             albums
         }
     }
 }
 
-
-export function createAlbum(album: any): IReduxAction {
+export function clearAlbums(): IReduxAction {
     return {
-        type: 'CREATE_ALBUM',
+        type: 'CLEAR_ALBUMS',
+        payload: {}
+    }
+}
+
+export function setCurrentAlbum(albumData: IAuthor): IReduxAction {
+    return {
+        type: 'SET_CURRENT_ALBUM',
         payload: {
-            album
+            albumData
         }
     }
 }
 
-
-export default {
-    getAlbums,
-    createAlbum
+export function clearCurrentAlbum(): IReduxAction {
+    return {
+        type: 'CLEAR_CURRENT_ALBUM',
+        payload: {}
+    }
 }

@@ -1,15 +1,6 @@
 import { IReduxAction } from "../common/interfaces/CommonInterfaces";
-import {IMusic} from "../common/interfaces";
+import {IMusic, IGenre} from "../common/interfaces";
 
-
-export function requestMusicById(id: string): IReduxAction {
-    return {
-        type: 'REQUEST_MUSIC_BY_ID',
-        payload: {
-            id
-        }
-    }
-}
 
 export function putMultipleMusic(musicList: IMusic[]): IReduxAction {
     return {
@@ -38,15 +29,6 @@ export function pushMusic(music: IMusic): IReduxAction {
     }
 }
 
-export function createMusic(music: any): IReduxAction {
-    return {
-        type: 'CREATE_MUSIC',
-        payload: {
-            music
-        }
-    }
-}
-
 export function changeMusicListStatus(status: string): IReduxAction {
     return {
         type: 'CHANGE_MUSIC_LIST_STATUS',
@@ -63,13 +45,11 @@ export function resetCurrentMusic() {
     }
 }
 
-
-export default {
-    requestMusicById,
-    putMultipleMusic,
-    setCurrentMusic,
-    pushMusic,
-    createMusic,
-    changeMusicListStatus,
-    resetCurrentMusic
+export function putGenres(genres: IGenre[]) {
+    return {
+        type: 'PUT_GENRES',
+        payload: {
+            genres
+        }
+    }
 }

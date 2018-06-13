@@ -10,3 +10,4 @@ export {PlaylistDetailScreen} from './PlaylistDetailScreen/PlaylistDetailScreen'
 export {PlaylistCreateScreen} from './PlaylistCreateScreen/PlaylistCreateScreen';
 export {ProfileScreen} from './ProfileScreen/ProfileScreen';
 export {SearchResultScreen} from './SearchResultScreen/SearchResultScreen';
+export {FavoriteMusicScreen} from './FavoriteMusicScreen/FavoriteMusicScreen';

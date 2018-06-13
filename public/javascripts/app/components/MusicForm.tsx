@@ -2,15 +2,21 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import toast from '../common/utils/toast';
 import {FileUpload, AddAuthor, AddAlbum, FormSelect} from "./";
-import {createMusic} from "../actions/musicActions";
+import {createMusic, fetchGenres} from "../thunkActions/musicActions";
+import {clearAlbums} from "../actions/albumActions";
+import {fetchAlbumsForAuthor, fetchAuthors} from "../thunkActions/authorActions";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
-import {IAuthor, IGenre, IAlbum} from "../common/interfaces";
-import {AuthorService, GenreService} from "../services";
+import {IAuthor, IGenre, IAlbum, INewMusic} from "../common/interfaces";
 import 'styleAlias/music-create.scss';
 
 
 interface IProps {
     dispatch?: (action: IReduxAction) => void
+    createMusic?: (music: INewMusic) => void
+    fetchGenres?: () => void
+    fetchAuthors?: () => void
+    fetchAlbumsForAuthor?: (authorId: string) => void
+    clearAlbums?: () => void
 }
 
 interface IState {
@@ -19,17 +25,21 @@ interface IState {
     authors: IAuthor[]
     albums: IAlbum[]
     genres: IGenre[]
-    newMusic: {
-        title: string
-        author: string
-        album: string
-        genre: string
-        audio_file: any
-    }
+    newMusic: INewMusic
 }
 
 
-@(connect() as any)
+@(connect((state: any) => ({
+    authors: state.authorReducer.authors,
+    genres: state.musicReducer.genres,
+    albums: state.albumReducer.currentAlbums
+}), (dispatch: any) => ({
+    createMusic: (music: INewMusic) => dispatch(createMusic(music)),
+    fetchGenres: () => dispatch(fetchGenres()),
+    fetchAuthors: () => dispatch(fetchAuthors()),
+    fetchAlbumsForAuthor: (authorId: string) => dispatch(fetchAlbumsForAuthor(authorId)),
+    clearAlbums: () => dispatch(clearAlbums())
+})) as any)
 export class MusicForm extends React.PureComponent<IProps, IState> {
     constructor(props: IProps) {
         super(props);
@@ -49,7 +59,6 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
         };
 
         this.initData = this.initData.bind(this);
-        this.fetchAlbumsForAuthor = this.fetchAlbumsForAuthor.bind(this);
         this.toggleAuthorModal = this.toggleAuthorModal.bind(this);
         this.toggleAlbumModal = this.toggleAlbumModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -62,34 +71,21 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
         this.initData();
     }
 
-    fetchInitialData(): Promise<any> {
-        return Promise.all([
-            AuthorService.getAuthors(),
-            GenreService.getGenres()
-        ]);
+    componentWillUnmount() {
+        this.props.clearAlbums();
     }
 
-    async initData() {
-        try {
-            const fetchedData = await this.fetchInitialData();
-            this.setState({
-                authors: fetchedData[0].data || [],
-                genres: fetchedData[1].data || []
-            });
-        } catch (err) {
-            toast.error(err.response.data.message || err.response.data);
-        }
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        return {
+            authors: nextProps.authors || [],
+            genres: nextProps.genres || [],
+            albums: nextProps.albums || []
+        };
     }
 
-    async fetchAlbumsForAuthor(authorId: string) {
-        try {
-            const response = await AuthorService.getAlbumsForAuthor(authorId);
-            this.setState({
-                albums: response.data.albums
-            });
-        } catch (err) {
-            toast.error(err.response.data.message || err.response.data);
-        }
+    initData() {
+        this.props.fetchAuthors();
+        this.props.fetchGenres();
     }
 
     validate() {
@@ -119,7 +115,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
     createTrack() {
         if (!this.validate()) return;
 
-        this.props.dispatch(createMusic(this.state.newMusic));
+        this.props.createMusic(this.state.newMusic);
     }
 
     toggleAuthorModal() {
@@ -142,7 +138,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
         this.setState(changes);
 
         if (event.target.id === 'author' && event.target.value) {
-            this.fetchAlbumsForAuthor(event.target.value);
+            this.props.fetchAlbumsForAuthor(event.target.value);
         }
     }
 
