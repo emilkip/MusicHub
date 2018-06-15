@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import * as Bluebird from 'bluebird';
 import {IPlaylist, Playlist} from "../models/Playlist";
-import { PlaylistItem } from "../models/PlaylistItem";
+import {IPlaylistItem, PlaylistItem} from "../models/PlaylistItem";
 import {Album} from "../models/Album";
 import {Author} from "../models/Author";
-import {DocumentQuery} from "mongoose";
 
 
 export function getPlaylists(req: Request, res: Response) {
@@ -42,7 +41,7 @@ export function getPlaylist(req: Request, res: Response) {
         .populate('owner')
 		.then((_playlist) => {
 			if (!_playlist) {
-				return Promise.reject({})
+				return Bluebird.reject({})
 			}
             playlist = _playlist;
 			return PlaylistItem.find({ playlist: _playlist._id }).populate('music');
@@ -162,7 +161,7 @@ export function createPlaylist(req: Request & { user }, res: Response) {
 
 export async function addToFavorite(req: Request & { user }, res: Response) {
     try {
-        const playlist: Playlist = await Playlist.findOne({ type: 'favorite', owner: req.user.id });
+        const playlist: IPlaylist = await Playlist.findOne({ type: 'favorite', owner: req.user.id });
 
         if (!playlist) return Bluebird.reject('Playlist not found');
 
@@ -183,11 +182,11 @@ export async function addToFavorite(req: Request & { user }, res: Response) {
 
 export async function getFavoriteMusic(req: Request & { user }, res: Response) {
 	try {
-        const playlist: Playlist = await Playlist.findOne({ type: 'favorite', owner: req.user.id });
+        const playlist: IPlaylist = await Playlist.findOne({ type: 'favorite', owner: req.user.id });
 
         if (!playlist) return Bluebird.reject('Playlist not found');
 
-        const musicList: PlaylistItem[] = await PlaylistItem.find({ playlist: playlist._id });
+        const musicList: IPlaylistItem[] = await PlaylistItem.find({ playlist: playlist._id });
         return res.status(200).json(musicList);
 	} catch (err) {
 		console.log(err);
