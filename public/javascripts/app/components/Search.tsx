@@ -1,10 +1,7 @@
 import * as React from 'react';
-import {MusicService} from '../services';
 import {connect} from "react-redux";
-import toast from '../common/utils/toast';
-import {putResults} from "../actions/searchAction";
-import history from "../configs/history";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
+import {search} from "../thunkActions/searchActions";
 import 'styleAlias/music-list.scss';
 
 
@@ -15,10 +12,16 @@ interface IState {
 
 interface IProps {
     dispatch?: (action: IReduxAction) => void
+    search?: (query: string) => void
 }
 
 
-@(connect(() => ({})) as any)
+@(connect(
+    () => ({}),
+    (dispatch: any) => ({
+        search: (query: string) => dispatch(search(query))
+    })
+) as any)
 export class Search extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
@@ -31,15 +34,9 @@ export class Search extends React.Component<IProps, IState> {
         this.handleInput = this.handleInput.bind(this);
     }
 
-    async search() {
-        try {
-            const results = await MusicService.searchAll(this.state.query);
-            this.setState({isRequested: true});
-            this.props.dispatch(putResults(results.data));
-            history.push('/search_result');
-        } catch (err) {
-            toast.error(err.message || err);
-        }
+    search() {
+        this.props.search(this.state.query);
+        this.setState({ isRequested: true });
     }
 
     handleInput(event: any): void {
@@ -59,7 +56,7 @@ export class Search extends React.Component<IProps, IState> {
                     <input type="text" className="form-control" placeholder="Search" onChange={this.handleInput}/>
                 </div>
                 <div className="col-auto">
-                    <button className="btn" onClick={this.search}><i className="fa fa-search"></i></button>
+                    <button className="btn" onClick={this.search}><i className="fa fa-search" /></button>
                 </div>
             </div>
         );
