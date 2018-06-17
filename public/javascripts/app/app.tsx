@@ -2,31 +2,28 @@ import * as React from 'react';
 import {connect} from "react-redux";
 import {ToastContainer} from 'react-toastify';
 import {GlobalPlayer, Routing} from './components';
-import {UserService} from './services';
-import {setUser} from "./actions/profileActions";
+import {fetchUser} from './thunkActions/profileActions';
 
 
 interface IProps {
     dispatch?: (action: any) => void
+    fetchUser?: () => void
 }
 
 
-@(connect() as any)
+@(connect((state: any) => ({
+    playlistInfo: state.playlistReducer.currentPlaylist.playlistInfo,
+    musicList: state.playlistReducer.currentPlaylist.musicList
+}), (dispatch: any) => ({
+    fetchUser: () => dispatch(fetchUser())
+})) as any)
 class App extends React.Component<IProps, any> {
     constructor(props: IProps) {
         super(props);
-
-        this.fetchUser = this.fetchUser.bind(this);
-        this.fetchUser();
     }
 
-    async fetchUser() {
-        try {
-            const user: any = await UserService.fetchUser();
-            this.props.dispatch(setUser(user.data));
-        } catch (err) {
-            console.log(err);
-        }
+    componentDidMount() {
+        this.props.fetchUser();
     }
 
     render() {
