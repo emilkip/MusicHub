@@ -1,7 +1,6 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Axios from 'axios';
-import history from "../configs/history";
-import '../screens/LayoutScreen/style.scss';
 
 
 export const Header = (props: any) => {
@@ -13,19 +12,19 @@ export const Header = (props: any) => {
             <nav className="main-nav-bar">
                 <div className="logo">
                     <div>
-                        <a onClick={() => history.push('/')}><h1>MusicHub</h1></a>
+                        <Link to="/"><h1>MusicHub</h1></Link>
                     </div>
                 </div>
                 <div className="auth-block">
-                    <a onClick={() => history.push('/profile')} className="btn-main">Profile</a>
+                    <Link to="/profile" className="btn-main">Profile</Link>
                     <a onClick={logout} className="btn-main">Logout</a>
                 </div>
             </nav>
             <nav className="sub-nav">
                 <ul>
-                    <li><a onClick={() => history.push('/genres')}>Genres</a></li>
-                    <li><a onClick={() => history.push('/playlists')}>Playlists</a></li>
-                    <li><a onClick={() => history.push('/favorite')}>Favorite music</a></li>
+                    <li><Link to="/genres">Genres</Link></li>
+                    <li><Link to="/playlists">Playlists</Link></li>
+                    <li><Link to="/favorite">Favorite music</Link></li>
                 </ul>
             </nav>
         </header>

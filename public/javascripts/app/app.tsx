@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from "react-redux";
-import {BrowserRouter} from 'react-router-dom';
-import {LayoutScreen} from './screens';
+import {ToastContainer} from 'react-toastify';
+import {GlobalPlayer, Routing} from './components';
 import {UserService} from './services';
 import {setUser} from "./actions/profileActions";
 
@@ -31,9 +31,11 @@ class App extends React.Component<IProps, any> {
 
     render() {
         return (
-            <BrowserRouter>
-                <LayoutScreen/>
-            </BrowserRouter>
+            <div>
+                <ToastContainer/>
+                <Routing/>
+                <GlobalPlayer/>
+            </div>
         );
     }
 }

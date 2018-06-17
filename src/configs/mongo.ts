@@ -10,4 +10,6 @@ mongoose
         console.log(err)
     });
 
+// mongoose.set('debug', true);
+
 export default mongoose;

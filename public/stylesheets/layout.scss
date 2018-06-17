@@ -43,6 +43,9 @@ a:not([href]) {
       font-size: 14px;
 
       a {
+        color: #333;
+        text-decoration: none;
+
         &:hover {
           opacity: .8;
         }
