@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {connect} from "react-redux";
-import {Progress, VolumeBar, QueueModal, PlayedMusicToast} from '../';
+import {Progress} from '../player/Progress';
+import {VolumeBar} from '../player/VolumeBar';
+import {QueueModal} from '../player/QueueModal';
+import {PlayedMusicToast} from '../playedMuscToast';
 import {IMusic} from "../../common/interfaces";
 import {buildCoverUrl} from '../../common/utils/cover';
 import toast from '../../common/utils/toast';

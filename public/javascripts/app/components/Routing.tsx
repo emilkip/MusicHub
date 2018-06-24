@@ -7,7 +7,6 @@ import {
     PlaylistsScreen,
     PlaylistDetailScreen,
     PlaylistCreateScreen,
-    MusicEditScreen,
     MusicCreateScreen,
     ProfileScreen,
     MusicScreen,
@@ -34,7 +33,7 @@ export class Routing extends React.Component {
                             {/*<Route path="/genre/:title" component={} />*/}
                             <Route path="/create_music" component={MusicCreateScreen} />
                             <Route path="/music/:id" exact component={MusicScreen} />
-                            <Route path="/music/:id/edit" component={MusicEditScreen} />
+                            {/*<Route path="/music/:id/edit" component={} />*/}
                             <Route path="/album/:id" component={AlbumScreen} />
                             <Route path="/author/:id" component={AuthorScreen} />
                             <Route path="/playlists" exact component={PlaylistsScreen} />

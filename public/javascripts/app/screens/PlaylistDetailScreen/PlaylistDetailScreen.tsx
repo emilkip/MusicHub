@@ -30,7 +30,7 @@ interface IState {
     fetchPlaylist: (id: string) => dispatch(fetchPlaylistDetails(id)),
     clearCurrentPlaylist: () => dispatch(clearCurrentPlaylist())
 })) as any)
-export class PlaylistDetailScreen extends React.Component<IProps, IState> {
+export default class PlaylistDetailScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 

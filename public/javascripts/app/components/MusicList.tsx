@@ -1,12 +1,12 @@
 import * as React from 'react';
+import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
-import {MusicGridItem} from './';
+import {MusicGridItem} from './MusicGridItem';
 import {IMusic} from "../common/interfaces";
-import 'styleAlias/music-list.scss';
 import {MusicListItem} from "./MusicListItem";
 import {changeMusicStatus, playOne} from "../actions/playerQueueActions";
 import {IReduxAction} from "../common/interfaces/CommonInterfaces";
-import {connect} from "react-redux";
+import 'styleAlias/music-list.scss';
 
 
 interface IProps {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {connect} from "react-redux";
-import {MusicList, Search} from '../../components';
+import {MusicList} from '../../components/MusicList';
+import {Search} from '../../components/Search';
 import {IMusic} from "../../common/interfaces";
 import {IReduxAction} from "../../common/interfaces/CommonInterfaces";
 import 'styleAlias/music-list.scss';
@@ -23,7 +24,7 @@ interface IState {
 }), (dispatch: any) => ({
     fetchMusicList: () => dispatch(fetchMusicList())
 })) as any)
-export class HomeScreen extends React.Component<IProps, IState> {
+export default class HomeScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
         this.state = {

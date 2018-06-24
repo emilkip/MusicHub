@@ -1,7 +1,12 @@
 import * as React from 'react';
 import {connect} from "react-redux";
 import {clearResults} from '../../actions/searchAction';
-import {MusicList, AlbumList, AuthorList, Playlists, Search, EmptyListMsg} from "../../components";
+import {MusicList} from '../../components/MusicList';
+import {AlbumList} from '../../components/AlbumList';
+import {AuthorList} from '../../components/AuthorList';
+import {Playlists} from '../../components/Playlists';
+import {Search} from '../../components/Search';
+import {EmptyListMsg} from '../../components/EmptyListMsg';
 import {IAuthor, IMusic, IAlbum, IPlaylist} from "../../common/interfaces";
 import {IReduxAction, ISearchResults} from "../../common/interfaces/CommonInterfaces";
 import 'styleAlias/music-list.scss';
@@ -23,7 +28,7 @@ interface IState {
 @(connect((state: any) => ({
     results: state.searchResultReducer
 })) as any)
-export class SearchResultScreen extends React.Component<IProps, IState> {
+export default class SearchResultScreen extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 

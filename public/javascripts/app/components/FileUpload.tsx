@@ -38,7 +38,7 @@ export class FileUpload extends React.Component<IUploadProps, IUploadState> {
         return (
             <div className="upload-component">
                 <label htmlFor={this.state.id}>
-                    <span className="fa fa-upload"></span>
+                    <span className="fa fa-upload" />
                     <span>{this.state.label}</span>
                 </label>
                 <input type="file" name="file" id={this.state.id} {...this.state.params} onChange={this.handleUpload}/>

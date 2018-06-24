@@ -1,7 +1,10 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import toast from '../common/utils/toast';
-import {FileUpload, AddAuthor, AddAlbum, FormSelect} from "./";
+import {FileUpload} from './FileUpload';
+import {AddAuthor} from './AddAuthor';
+import {AddAlbum} from './AddAlbum';
+import {FormSelect} from './FormSelect';
 import {createMusic, fetchGenres} from "../thunkActions/musicActions";
 import {clearAlbums} from "../actions/albumActions";
 import {fetchAlbumsForAuthor, fetchAuthors} from "../thunkActions/authorActions";
@@ -167,9 +170,9 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
                                             onSelect={this.handleChange}/>
                             </div>
                             <div className="row col-md-5 justify-content-end">
-                                <div className="btn-black" onClick={this.toggleAuthorModal}>
+                                <button className="btn-black" onClick={this.toggleAuthorModal}>
                                     <i className="fa fa-plus"/>Add author
-                                </div>
+                                </button>
                             </div>
                         </div>
                         <div className="row justify-content-between align-items-center">
@@ -183,9 +186,9 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
                                 </div>
                             </div>
                             <div className="row col-md-5 justify-content-end">
-                                <div className="btn-black" onClick={this.toggleAlbumModal}><i
+                                <button className="btn-black" onClick={this.toggleAlbumModal}><i
                                     className="fa fa-plus"/>Add album
-                                </div>
+                                </button>
                             </div>
                         </div>
                         <div className="row">
@@ -206,7 +209,7 @@ export class MusicForm extends React.PureComponent<IProps, IState> {
                                             label="Select track"/>
                             </div>
                         </div>
-                        <div className="btn-black" onClick={this.createTrack}>Create</div>
+                        <button className="btn-black" onClick={this.createTrack}>Create</button>
                     </div>
                 </div>
                 <AddAuthor isOpen={this.state.isAuthorModalOpen} onModalClose={this.toggleAuthorModal}

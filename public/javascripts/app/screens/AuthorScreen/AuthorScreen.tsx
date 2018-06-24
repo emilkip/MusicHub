@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {AlbumList, EmptyListMsg} from "../../components";
-import {IAlbum, IAuthor} from "../../common/interfaces";
-import 'styleAlias/music-list.scss';
 import {connect} from "react-redux";
+import {AlbumList} from "../../components/AlbumList";
+import {EmptyListMsg} from "../../components/EmptyListMsg";
+import {IAlbum, IAuthor} from "../../common/interfaces";
 import {fetchAuthor} from "../../thunkActions/authorActions";
 import {clearCurrentAuthor} from "../../actions/authorActions";
+import 'styleAlias/music-list.scss';
 
 interface IProps {
     fetchAuthor?: (id: string) => void
@@ -25,7 +26,7 @@ interface IState {
     fetchAuthor: (id: string) => dispatch(fetchAuthor(id)),
     clearCurrentAuthor: () => dispatch(clearCurrentAuthor())
 })) as any)
-export class AuthorScreen extends React.Component<IProps, IState> {
+export default class AuthorScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 

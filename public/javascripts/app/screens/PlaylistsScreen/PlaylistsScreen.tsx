@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {INewMusic, IPlaylist} from "../../common/interfaces";
-import {Playlists} from "../../components";
+import {Playlists} from "../../components/Playlists";
 import history from '../../configs/history';
-import 'styleAlias/common.scss';
-import 'styleAlias/playlist.scss';
 import {connect} from "react-redux";
 import {fetchRecentPlaylists} from "../../thunkActions/playlistActions";
+import 'styleAlias/playlist.scss';
+import 'styleAlias/common.scss';
 
 
 interface IProps {
@@ -22,7 +22,7 @@ interface IState {
 }), (dispatch: any) => ({
     fetchRecentPlaylists: () => dispatch(fetchRecentPlaylists())
 })) as any)
-export class PlaylistsScreen extends React.Component<IProps, IState> {
+export default class PlaylistsScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 

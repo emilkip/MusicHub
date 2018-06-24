@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {IMusic} from "../../common/interfaces";
-import {EmbeddedMusicSearch} from "../../components/EmbeddedMusicSearch";
 import PlaylistService from "../../services/PlaylistService";
 import history from '../../configs/history';
 import toast from "../../common/utils/toast";
-import {FormSelect} from "../../components";
+import {FormSelect} from "../../components/FormSelect";
+import {EmbeddedMusicSearch} from "../../components/EmbeddedMusicSearch";
 
 interface IState {
     title: string
@@ -12,8 +12,7 @@ interface IState {
     musicList: IMusic[]
 }
 
-export class PlaylistCreateScreen extends React.Component<any, IState> {
-
+export default class PlaylistCreateScreen extends React.Component<any, IState> {
     constructor(props: any) {
         super(props);
 

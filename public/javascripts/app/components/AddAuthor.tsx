@@ -79,7 +79,7 @@ export class AddAuthor extends React.Component<IProps, IState> {
                         <h3>New author</h3>
                     </div>
                     <div className="col-md-2">
-                        <i className="fa fa-times" onClick={this.closeModal}/>
+                        <button className="fa fa-times" onClick={this.closeModal}/>
                     </div>
                 </div>
                 <hr/>
@@ -92,7 +92,7 @@ export class AddAuthor extends React.Component<IProps, IState> {
                                value={this.state.authorName}
                                onChange={this.handleChange}/>
                     </div>
-                    <div className="btn-black" onClick={this.createAuthor}>Create</div>
+                    <button className="btn-black" onClick={this.createAuthor}>Create</button>
                 </div>
             </Modal>
         );

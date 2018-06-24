@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {IAlbum} from "../common/interfaces";
-import {AlbumListItem} from "../components";
+import {AlbumListItem} from '../components/AlbumListItem';
 import 'styleAlias/music-list.scss';
 
 

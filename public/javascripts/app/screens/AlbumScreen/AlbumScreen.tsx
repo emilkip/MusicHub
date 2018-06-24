@@ -1,8 +1,9 @@
 import * as React from 'react';
+import {connect} from "react-redux";
 import {IAlbum, IMusic} from "../../common/interfaces";
 import {buildCoverUrl} from '../../common/utils/cover';
-import {connect} from "react-redux";
-import {EmptyListMsg, MusicList} from "../../components";
+import {EmptyListMsg} from '../../components/EmptyListMsg';
+import {MusicList} from '../../components/MusicList';
 import {clearCurrentAlbum} from "../../actions/albumActions";
 import {fetchAlbum} from "../../thunkActions/albumActions";
 import 'styleAlias/album.scss';
@@ -27,7 +28,7 @@ interface IState {
     fetchAlbum: (id: string) => dispatch(fetchAlbum(id)),
     clearCurrentAlbum: () => dispatch(clearCurrentAlbum())
 })) as any)
-export class AlbumScreen extends React.Component<IProps, IState> {
+export default class AlbumScreen extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {

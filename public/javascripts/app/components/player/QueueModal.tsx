@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IMusic} from "../../common/interfaces";
 import {connect} from "react-redux";
 import {changeMusicStatus} from "../../actions/playerQueueActions";
-import {EmptyListMsg} from "../../components";
+import {EmptyListMsg} from '../../components/EmptyListMsg';
 import 'styleAlias/player.scss';
 
 interface IProps {

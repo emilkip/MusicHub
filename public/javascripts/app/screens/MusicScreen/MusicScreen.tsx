@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {connect} from 'react-redux';
 import toast from '../../common/utils/toast';
 import {SingleMusicPlayer} from '../../components/SingleMusicPlayer';
 import {IMusic} from "../../common/interfaces";
 import {IReduxAction} from "../../common/interfaces/CommonInterfaces";
-import {connect} from "react-redux";
 import {resetCurrentMusic} from "../../actions/musicActions";
 import {fetchMusic} from "../../thunkActions/musicActions";
 
@@ -25,7 +25,7 @@ interface IState {
     resetCurrentMusic: () => dispatch(resetCurrentMusic()),
     fetchMusic: (id: string) => dispatch(fetchMusic(id))
 })) as any)
-export class MusicScreen extends React.Component<IProps, IState> {
+export default class MusicScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
         this.state = {

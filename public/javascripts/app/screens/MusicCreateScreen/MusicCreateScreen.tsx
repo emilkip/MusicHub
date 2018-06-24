@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {MusicForm} from "../../components";
+import {MusicForm} from '../../components/MusicForm';
 
 
-export class MusicCreateScreen extends React.Component {
+export default class MusicCreateScreen extends React.Component {
     render() {
         return (
             <div>

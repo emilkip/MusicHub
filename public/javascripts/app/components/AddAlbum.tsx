@@ -3,7 +3,8 @@ import * as Modal from 'react-modal';
 import toast from '../common/utils/toast';
 import {AlbumService} from "../services";
 import ModalStyle from '../common/styles/AddModalStyle'
-import {FormSelect, FileUpload} from "./";
+import {FormSelect} from "./FormSelect";
+import {FileUpload} from "./FileUpload";
 
 
 interface IProps {
@@ -100,7 +101,7 @@ export class AddAlbum extends React.Component<IProps, IState> {
                         <h3>New album</h3>
                     </div>
                     <div className="col-md-2">
-                        <i className="fa fa-times" onClick={this.closeModal}/>
+                        <button className="fa fa-times" onClick={this.closeModal}/>
                     </div>
                 </div>
                 <hr/>
@@ -121,7 +122,7 @@ export class AddAlbum extends React.Component<IProps, IState> {
                             <FileUpload id="cover_file" onFileUpload={this.handleChange} params={{accept: "image/*"}} label="Select image" />
                         </div>
                     </div>
-                    <div className="btn-black" onClick={this.createAlbum}>Create</div>
+                    <button className="btn-black" onClick={this.createAlbum}>Create</button>
                 </div>
             </Modal>
         );

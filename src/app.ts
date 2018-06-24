@@ -1,6 +1,7 @@
 import * as Express from 'express';
 import * as path from 'path';
 import * as logger from 'morgan';
+import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
 import * as flash from 'connect-flash';
 import * as bodyParser from 'body-parser';
@@ -26,6 +27,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression());
 app.use(eSession({
 	secret: 'meow',
 	resave: false,
@@ -38,10 +40,13 @@ app.use(eSession({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(Express.static(path.join(__dirname, '../public')));
-app.disable('x-powered-by');
 
+app.use(Express.static(path.join(__dirname, '../public/dist_client')));
+app.use('/images', Express.static(path.join(__dirname, '../public/images')));
+app.use('/cover', Express.static(path.join(__dirname, '../public/images/cover')));
 app.use('/libs', Express.static('node_modules'));
+
+app.disable('x-powered-by');
 
 // Routes
 app.use('/api', policy.isAuthorizedApi, api);

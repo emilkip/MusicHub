@@ -17,7 +17,7 @@ interface IState {
 @(connect((state: any) => ({
     user: state.profileReducer.user
 })) as any)
-export class ProfileScreen extends React.Component<IProps, IState> {
+export default class ProfileScreen extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 

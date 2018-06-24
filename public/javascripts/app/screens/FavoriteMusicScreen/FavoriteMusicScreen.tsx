@@ -2,7 +2,7 @@ import * as React from 'react';
 import {IMusic} from "../../common/interfaces";
 import toast from "../../common/utils/toast";
 import {PlaylistService} from "../../services";
-import {Playlists} from "../../components";
+import {Playlists} from "../../components/Playlists";
 import history from '../../configs/history';
 import 'styleAlias/common.scss';
 import 'styleAlias/playlist.scss';
@@ -20,7 +20,7 @@ interface IState {
 @(connect((state: any) => ({
     musicList: state.musicReducer.musicList
 })) as any)
-export class FavoriteMusicScreen extends React.Component<IProps, IState> {
+export default class FavoriteMusicScreen extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 

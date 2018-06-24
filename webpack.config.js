@@ -14,8 +14,10 @@ module.exports = {
     },
 
     output: {
+        publicPath: '/',
         path: path.resolve(__dirname, 'public/dist_client'),
-        filename: 'client.js'
+        filename: 'client.js',
+        chunkFilename: '[name].[chunkhash].chunk.js'
     },
 
     module: {
@@ -68,15 +70,16 @@ module.exports = {
     },
 
     optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        }
+        // Compiling vendors libs into a single chunk
+        // splitChunks: {
+        //     cacheGroups: {
+        //         commons: {
+        //             test: /[\\/]node_modules[\\/]/,
+        //             name: 'vendors',
+        //             chunks: 'all'
+        //         }
+        //     }
+        // }
     },
 
     plugins: [
