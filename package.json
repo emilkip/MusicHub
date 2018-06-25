@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./dist_server/server.js",
-    "build_dev": "webpack -w --mode development"
+    "build_dev": "webpack --mode development && tsc -p tsconfig.server.json",
+    "build_prod": "webpack --mode production && tsc -p tsconfig.server.json"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
