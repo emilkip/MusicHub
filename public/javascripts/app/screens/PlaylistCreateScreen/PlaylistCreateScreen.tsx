@@ -5,6 +5,7 @@ import history from '../../configs/history';
 import toast from "../../common/utils/toast";
 import {FormSelect} from "../../components/FormSelect";
 import {EmbeddedMusicSearch} from "../../components/EmbeddedMusicSearch";
+import 'styleAlias/playlist.scss';
 
 interface IState {
     title: string

@@ -1,5 +1,5 @@
 const path = require('path');
-// const extractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 module.exports = {
@@ -20,7 +20,6 @@ module.exports = {
     },
 
     module: {
-
         rules: [
             {
                 test: /\.tsx?$/,
@@ -38,50 +37,40 @@ module.exports = {
                 ]
             },
             {
-                test: /\.scss$/,
-                // use: extractTextPlugin.extract({
-                //     fallback: "style-loader",
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: "css-loader"
-                        },
-                        {
-                            loader: "sass-loader"
-                        }
-                    ]
-                // })
-            },
-            {
-                test: /\.css$/,
+                test: /\.s?css$/,
                 use: [
-                    {
-                        loader: 'style-loader'
-                    },
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: "css-loader"
+                    },
+                    {
+                        loader: "sass-loader"
                     }
                 ]
-            }
+            },
         ]
     },
 
     optimization: {
-        // Compiling vendors libs into a single chunk
-        // splitChunks: {
-        //     cacheGroups: {
-        //         commons: {
-        //             test: /[\\/]node_modules[\\/]/,
-        //             name: 'vendors',
-        //             chunks: 'all'
-        //         }
-        //     }
-        // }
+        splitChunks: {
+            cacheGroups: {
+                // commons: {
+                //     test: /[\\/]node_modules[\\/]/,
+                //     name: 'vendors',
+                //     chunks: 'all'
+                // }
+                styles: {
+                    name: 'styles',
+                    test: /\.scss$/,
+                    enforce: true
+                }
+            }
+        }
     },
 
     plugins: [
-        // new extractTextPlugin('style.css')
+        new MiniCssExtractPlugin({
+            filename: '[name].css'
+        })
     ]
 };
