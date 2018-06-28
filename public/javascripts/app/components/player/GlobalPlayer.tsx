@@ -33,7 +33,7 @@ interface IState {
 @(connect((state: any) => ({
     playedMusic: state.playerQueueReducer.playedMusic
 })) as any)
-export class GlobalPlayer extends React.Component<IProps, IState> {
+export default class GlobalPlayer extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
         this.state = {

@@ -86,7 +86,7 @@ export class Progress extends React.Component<IProps, IState> {
         if (this.state.status === 'PLAYING' && prevState.status !== 'PLAYING') {
             this.setTimer();
         }
-        if ((this.state.status === 'PAUSED' && prevState.status === 'PLAYING') || this.state.status === 'STOPPED') {
+        if ((this.state.status === 'PAUSED' || this.state.status === 'STOPPED') && prevState.status === 'PLAYING') {
             this.clearTimer();
         }
     }

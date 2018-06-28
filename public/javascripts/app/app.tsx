@@ -47,7 +47,7 @@ class App extends React.Component<IProps, IState> {
         import(/* webpackChunkName: "GlobalPlayer" */ './components/player/GlobalPlayer')
             .then((component) => {
                 this.setState({
-                    playerComponent: component.GlobalPlayer
+                    playerComponent: component.default
                 });
             })
             .catch((err) => {
