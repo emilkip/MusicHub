@@ -73,29 +73,25 @@ export default class GlobalPlayer extends React.Component<IProps, IState> {
             url: nextProps.playedMusic.music.filename,
             music: nextProps.playedMusic.music,
             status: nextProps.playedMusic.playing ? Sound.status.PLAYING : Sound.status.PAUSED,
-            playedMusic: nextProps.playedMusic
+            playedMusic: nextProps.playedMusic,
+            position: prevState.position,
+            duration: prevState.duration,
+            loaded: prevState.loaded
         };
     }
 
     componentDidUpdate(prevProps: any, prevState: any) {
-        if (this.state.music._id !== prevState.music._id) {
-            toast.customTemplate(
-                <PlayedMusicToast
-                    coverUrl={this.state.music.album.cover}
-                    title={this.state.music.title}
-                    author={this.state.music.author.title}/>,
-                {
-                    hideProgressBar: true
-                }
-            );
+        if (prevState.status === Sound.status.PLAYING) return;
 
-            return this.setState({
-                position: 0,
-                duration: 0,
-                loaded: 0,
-                status: Sound.status.PLAYING
-            });
-        }
+        toast.customTemplate(
+            <PlayedMusicToast
+                coverUrl={this.state.music.album.cover}
+                title={this.state.music.title}
+                author={this.state.music.author.title}/>,
+            {
+                hideProgressBar: true
+            }
+        );
     }
 
     handleLoading(loadingStatus: any) {
@@ -117,6 +113,12 @@ export default class GlobalPlayer extends React.Component<IProps, IState> {
     }
 
     handleFinish() {
+        this.setState({
+            position: 0,
+            duration: 0,
+            loaded: 0,
+            status: Sound.status.STOPPED
+        });
         this.props.dispatch(playNext());
     }
 
